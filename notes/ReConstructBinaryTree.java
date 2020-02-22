@@ -33,5 +33,4 @@ public class Solution {
         root.right = reConstructBinaryTree(pre, preL + leftTreeSize + 1, preR, inL + leftTreeSize + 1 );
         return root;
     }
-
 }
