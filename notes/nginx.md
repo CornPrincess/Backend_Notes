@@ -29,7 +29,7 @@ nginx can run without sudo.
 nginx will load all files in /usr/local/etc/nginx/servers/.
 
 To have launchd start nginx now and restart at login:
-  brew services start nginxK
+  brew services start nginx
 Or, if you don't want/need a background service you can just run:
   nginx
 ```
@@ -56,11 +56,11 @@ nginx有一个主线程（main process）和多个工作线程（worker process�
 
 
 
-## Nginx配置文件
+## Nginx常用命令
 
 nginx默认的配置文件nginx.conf在`/usr/local/nginx/conf`, `/etc/nginx`, 或`/usr/local/etc/nginx`中
 
-当nginx启动之后，我们可以通过以下命令来控制它。
+当nginx启动之后，我们可以通过以下命令来控制它。 `ngixn -s <command>`
 
 ```bash
 stop — fast shutdown
@@ -81,6 +81,95 @@ kill -s QUIT <pid>
 ```
 
 
+
+## 几个路径
+
+在MacOs10.15.3系统中，用homebrew安装nginx，以下路径需要注意/
+
+`/usr/local/var/run/nginx.pid` 存放nginx运行线程信息
+
+`/usr/local/etc/nginx/nginx.conf` 存放nginx的默认配置文件，如果nginx.conf被改名，nginx将会启动失败
+
+`/usr/local/var/log/nginx` 存放nginx运行日志，包括access.log,  error.log
+
+
+
+## Nginx配置文件
+
+nginx安装完毕后，默认的配置文件 `nginx.conf` 会存放在`/usr/local/etc/nginx/nginx.conf` 目录，为了学习配置文件，我们可以先将nginx.conf 重命名为 `nginx.back.conf`，再新建 `nginx.conf` 文件，如下：
+
+```nginx
+events {
+    worker_connections  1024;
+}
+
+http {
+    server {
+        location / {
+             root /data/www;
+        }
+        location /images/ {
+            root /data;
+        }
+    }
+}
+```
+
+以上配置文件定义两个路由，需要注意的是路由的匹配规则为**最长路径匹配**： 即若url以 `/images` 开头， `location /` 也能匹配到，但是他不是最长路径，所以会匹配到下面的 `location /images/`
+
+
+
+更新以上配置文件（不设置端口号时默认端口为80），并且重启nginx后，
+
+- 访问 `localhost`， nginx将会读取 `/data/www/index.html`， 若不存在将会报404
+- 访问localhost/images/test.png， nginx将会读取 `/data/images/test.png`(**这里要注意路径**)，若不存在将会报404
+
+
+
+## Nginx配置代理
+
+nginx可以用来配置代理，即当服务器收到请求时将请求先转发给代理服务器，然后将从代理服务器收到的返回信息发送给客户端
+
+
+
+client   --->  nginx ---> proxy server
+
+​            <---              <---
+
+
+
+我们简单修改之前的配置文件：
+
+```nginx
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    server {
+        location / {
+            proxy_pass http://localhost:8080;
+        }
+        location ~ \.(gif|jpg|png)$ {
+            root /data/images;
+        }
+    }
+
+    server {
+        listen 8080;
+        root /data/proxy;
+
+        location / {
+        }
+    }
+} 
+```
+
+
+
+- `Proxy_paas`：设置对应的代理服务器URL
+- `~ \.(gif|jpg|png)$ `：正则表达式，将以 `.gif`, `.jpg`, `png`结尾的请求转到 `/data/images` 路径
 
 
 
