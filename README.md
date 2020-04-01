@@ -15,13 +15,17 @@
 <br>
 
 <div align="center">
-    <img src="https://media-exp1.licdn.com/dms/image/C561BAQEazVZ-tlQZtg/company-background_10000/0?e=2159024400&v=beta&t=1BGrqFcuQVay8ltLFmf6Y0-1Mw7bhC9gupvsQFWkeek" width="200px">
+    <img src="https://media-exp1.licdn.com/dms/image/C561BAQEazVZ-tlQZtg/company-background_10000/0?e=2159024400&v=beta&t=1BGrqFcuQVay8ltLFmf6Y0-1Mw7bhC9gupvsQFWkeek">
 </div>
+
 <br>
 
 ## :pencil: 算法与数据结构
 
 ## :coffee: Java
+
+- Java基础
+  - 基本类型的包装类
 
 ## :computer: 计算机组成原理
 

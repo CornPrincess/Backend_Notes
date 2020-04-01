@@ -1,0 +1,204 @@
+# Java基础
+
+## 基本类型的包装类
+
+> There are two kinds of types in the Java programming language: primitive types ([§4.2](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.2)) and reference types ([§4.3](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.3)). There are, correspondingly, two kinds of data values that can be stored in variables, passed as arguments, returned by methods, and operated on: primitive values ([§4.2](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.2)) and reference values ([§4.3](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.3)). <sup>[1]</sup>
+
+通过java官方语言规范（Java SE Language Specification）的描述我们可以知道，目前Java语言所使用的数据类型有两种：[PrimitiveType](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-PrimitiveType)，[ReferenceType](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-ReferenceType)
+
+> PrimitiveType:
+
+> {[Annotation](https://docs.oracle.com/javase/specs/jls/se14/html/jls-9.html#jls-Annotation)} [NumericType](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-NumericType)
+> {[Annotation](https://docs.oracle.com/javase/specs/jls/se14/html/jls-9.html#jls-Annotation)} `boolean`
+
+> NumericType:
+
+> [IntegralType](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-IntegralType)
+> [FloatingPointType](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-FloatingPointType)
+
+> IntegralType:
+
+> (one of)
+> `byte` `short` `int` `long` `char`
+
+> FloatingPointType:
+
+> (one of)
+> `float` `double`
+
+其中PrimitiveType共有byte, short, int, long, char, float, double, boolean八种，但是这八种基本类型都有对应的包装类（wrapper），Java语言在设计时为什么会需要这八种包装类呢？我认为根本的原因在于Java是面向对象的语言，使用对象进行编程可以最大程度发挥面向对象的优势。
+
+![image-20200401215803856](/Users/zhoutianbin/Code/Backend_Nodets/asserts/privimitivewrapper.png)
+
+### 集合类泛型只能支持对象
+
+```java
+List<Integer> list = new ArrayList<Integer>(); 
+```
+
+由于每个值分别包装在对象中，所以 `ArrayList<Integer>` 的效率要低于 `int[]` ，因此，应该用包装类构建小心集合
+
+### 基本类型不能被赋值null
+
+在写有些业务代码时需要用到null，此时需要使用包装类
+
+```java
+int a = 0;
+Integer A = null;
+Integer B = 2 * A; // Throw NullPointException
+```
+
+但是此时需要注意可能会抛 NullPointException 异常。
+
+```java
+Integer a = 1;
+Double b = 2.0;
+System.out.println(true ? a : b); // 1.0
+```
+
+**如果在一个条件表达式中用到了 Integer 和 Double 类型，那么Integer值会先拆箱，提升为 double，再装箱为 Double。**
+
+### java.util包中不支持基本类型操作
+
+对于 基本类型常用的方法，除了可以放在 util 包中，还可以放在包装类中， 如 Integer.parseInt() 静态方法。
+
+### 自动拆装箱
+
+JDK5中引入了自动拆装箱技术<sup>[2]</sup>
+
+```
+// autoBoxing
+list.add(3);
+list.add(Integer.valueOf(3)); 
+
+Integer t = 1;
+t++;
+
+// autoUnBoxing
+int n = list.get(i);
+int n = list.get(i).intValue();
+```
+
+### ### 包装类常量池
+
+在JDK5中引入了包装类的常量池<sup>[3]</sup>，类似String类的对象池机制一样，用于节约内存以及提高运行的效率。
+
+通过查看源码我们可以知道，Byte, Short, Integer, Long, Character，这五个包装类存在常量池，并且有以下两点需要注意：
+
+- 常量池的范围为[-128, 127]
+- **常量池只对自动装箱定义的包装类对象有效**，对构造函数生成的包装类对象无效。
+
+自动装箱示例
+
+```java
+Integer a = 10; //this is autoboxing
+Integer b = Integer.valueOf(10); //under the hood
+```
+
+自动装箱过程是由编译器自动完成的。
+
+代码示例
+
+```java
+@Test
+public void test() {
+  Integer i = 127;
+  Integer i2 = 127;
+  System.out.println(i  == i2); // true
+
+  Integer i3 = -128;
+  Integer i4 = -128;
+  System.out.println(i3  == i4); // true
+
+  Integer i5 = 128;
+  Integer i6 = 128;
+  System.out.println(i5  == i6); // false
+
+  Integer i7 = -129;
+  Integer i8 = -129;
+  System.out.println(i7  == i8); // false
+
+  Integer j = new Integer(127);
+  Integer j2 = new Integer(127);
+  System.out.println(j == j2);  // false
+}
+```
+
+这里最后一个测试用例输出 false 可以由以下源码得到答案，简单来说通过构造器生产的包装类对象不会从常量包装类缓存中取，每次都是新生成的，所以不同。
+
+
+
+Integer中常量池源码(JDK1.8.0_202)解读
+
+```java
+/**
+	* Cache to support the object identity semantics of autoboxing for values between
+  * -128 and 127 (inclusive) as required by JLS.
+  *
+  * The cache is initialized on first usage.  The size of the cache
+  * may be controlled by the {@code -XX:AutoBoxCacheMax=<size>} option.
+  * During VM initialization, java.lang.Integer.IntegerCache.high property
+  * may be set and saved in the private system properties in the
+  * sun.misc.VM class.
+*/
+private static class IntegerCache {
+  static final int low = -128;
+  static final int high;
+  static final Integer cache[];
+
+  static {
+    // high value may be configured by property
+    int h = 127;
+    String integerCacheHighPropValue =
+    sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+    if (integerCacheHighPropValue != null) {
+    try {
+      int i = parseInt(integerCacheHighPropValue);
+      i = Math.max(i, 127);
+      // Maximum array size is Integer.MAX_VALUE
+      h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+      } catch( NumberFormatException nfe) {
+      // If the property cannot be parsed into an int, ignore it.
+      }
+  	}
+    high = h;
+
+    cache = new Integer[(high - low) + 1];
+    int j = low;
+    for(int k = 0; k < cache.length; k++)
+    cache[k] = new Integer(j++);
+
+    // range [-128, 127] must be interned (JLS7 5.1.7)
+    assert IntegerCache.high >= 127;
+  }
+
+  private IntegerCache() {}
+}
+```
+
+```java
+public static Integer valueOf(int i) {
+    if (i >= IntegerCache.low && i <= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+```
+
+我们从源码的注释中可以看到 `// range [-128, 127] must be interned (JLS7 5.1.7)`， 默认的范围为 [-128, 127]， 并且JDK6之后，我们可以通过 `VM argument -XX:AutoBoxCacheMax=size` 来改变最大值
+
+> If the value `p` being boxed is `true`, `false`, a `byte`, or a `char` in the range `\u0000` to `\u007f`, or an `int` or `short` number between `-128` and `127` (inclusive), then let `r1` and `r2` be the results of any two boxing conversions of `p`. It is always the case that `r1` `==` `r2`.
+>
+> [JLS7 5.1.7](https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.7)
+
+关于常量池范围总结：Byte, Short, Integer, Long都是[-128, 127]，Character为[0, 127]，并且这五个包装类只有Integer是可以自定义最大值范围的。
+
+## Reference
+
+1. [The Kinds of Types and Values](https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.1)
+2. [Autoboxing and Unboxing](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html)
+
+3. [Java Integer Cache](https://javapapers.com/java/java-integer-cache/)
+
+
+
+## 按值传递
