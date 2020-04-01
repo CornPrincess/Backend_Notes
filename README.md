@@ -25,7 +25,7 @@
 ## :coffee: Java
 
 - Java基础
-  - 基本类型的包装类
+  - [基本类型的包装类](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8C%85%E8%A3%85%E7%B1%BB.md)
 
 ## :computer: 计算机组成原理
 
