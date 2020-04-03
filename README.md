@@ -56,3 +56,8 @@ badge: [badgen](https://badgen.net)
 ### License
 MIT
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+### TODO
+ - [ ] hasSet.contains() list.contains() 的区别
+ - [ ] 翻译谷歌技术写作文档
+ - [ ] freecodecamp 翻译计划
