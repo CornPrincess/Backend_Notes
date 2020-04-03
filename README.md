@@ -25,6 +25,7 @@
 ## :coffee: Java
 
 - Java基础
+  - [基本类型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B.md) 
   - [基本类型的包装类](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8C%85%E8%A3%85%E7%B1%BB.md)
 
 ## :computer: 计算机组成原理
@@ -47,9 +48,11 @@
 
 在线排版工具：[Text-Typesetting](https://github.com/CyC2018/Text-Typesetting)。
 
-### License
-MIT
-
+### Tool
+Google Tech writing
 Logo：[logomakr](https://logomakr.com/)
 badge: [badgen](https://badgen.net)
+
+### License
+MIT
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
