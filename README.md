@@ -27,8 +27,16 @@
 - Java基础
   - [基本类型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B.md) 
   - [基本类型的包装类](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8C%85%E8%A3%85%E7%B1%BB.md)
+- Java容器
+
+
+### TODO
+ - [ ] 运算符优先级
+ - [ ] foreach中不能修改集合
+ - [ ] 引用与传值
 
 ## :computer: 计算机组成原理 
+### TODO
  - [ ] 原码 反码 补码 ~4 == 5 为什么
 ## :desktop_computer: 操作系统 
 
