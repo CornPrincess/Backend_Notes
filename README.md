@@ -33,13 +33,12 @@
 
 
 ### TODO
- - [ ] 运算符优先级
  - [ ] foreach中不能修改集合
  - [ ] 引用与传值
 
 ## :computer: 计算机组成原理 
 ### TODO
- - [ ] 原码 反码 补码 ~4 == 5 为什么
+
 ## :desktop_computer: 操作系统 
 
 ## :cloud: 网络协议
