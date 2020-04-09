@@ -60,9 +60,9 @@
 在线排版工具：[Text-Typesetting](https://github.com/CyC2018/Text-Typesetting)。
 
 ### Tool
-- Google Tech writing
-- Logo：[logomakr](https://logomakr.com/)
-- badge: [badgen](https://badgen.net)
+- [Google Tech writing](https://docs.google.com/document/d/16aoMrMGHPIR1i_eUNRvksdDdwcDG6KiOJN6Vfh-n8-s/edit#heading=h.vnp1hgr949hw)
+- [logomakr](https://logomakr.com/)
+- [badgen](https://badgen.net)
 
 ### License
 MIT
