@@ -1,4 +1,4 @@
-# 数组
+数组
 
 ## 概述
 
@@ -16,12 +16,12 @@
 在Java中允许将一个数组变量拷贝给另一个数组变量，此时两个变量将引用同一个数组，且各自对数组的操作会影响到另一方。
 
 ```java
-int[] smallPrimes = {2, 3, 5, 7, 11, 12};
-int[] luckyNumbers = a;
-luckyNumbers[1] = 8 // now smallPrimes[1] is also 8
+int[] a = {1, 2, 3};
+int[] b = a;
+b[1] = 8 // now a[1] is also 8
 ```
 
-![copyArray](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/copyArray.png)
+- [ ] 补充图片
 
 ### Arrays.copyOf()
 
@@ -100,7 +100,7 @@ System.out.println(Arrays.toString(var1));
 
 Java实际没有多维数组，只有一维数组，多维数组被解释为“数组的数组”。
 
-![multiArray](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/multiArray.png)
+- [ ] 补图 corejava
 
 多维数组可以用 `Arrays.deepToString()`  来进行打印
 
@@ -118,6 +118,3 @@ int[0] = new int[1];
 int[0] = new int[3];
 ````
 
-## Reference
-
-1. [Java核心技术·卷 I（原书第10版）](https://book.douban.com/subject/26880667/)
