@@ -27,6 +27,8 @@
 - Java基础
   - [基本类型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B.md) 
   - [基本类型的包装类](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8C%85%E8%A3%85%E7%B1%BB.md)
+  - [运算符](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E8%BF%90%E7%AE%97%E7%AC%A6.md)
+  - [字符串](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%AD%97%E7%AC%A6%E4%B8%B2.md)
 - Java容器
 
 
