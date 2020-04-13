@@ -1,0 +1,74 @@
+# 多态
+
+我们继续使用继承中的的示例代码
+
+```java
+public class Employee {
+    private String name;
+    private double salary;
+    private LocalDate hireDay;
+
+    public Employee(String name, double salary, int year, int month, int day) {
+        this.name = name;
+        this.salary = salary;
+        this.hireDay = LocalDate.of(year, month, day);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public LocalDate getHireDay() {
+        return hireDay;
+    }
+
+    public void raiseSalary(double byPercent) {
+        double raise = salary * byPercent / 100;
+        salary += raise;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", salary=" + salary +
+                ", hireDay=" + hireDay +
+                '}';
+    }
+}
+```
+
+```java
+public class Manager extends Employee {
+    private double bonus;
+
+    public Manager(String name, double salary, int year, int month, int day) {
+        // Manager 类的构造器不能访问 Employee 类的私有域，所以必须利用 Employee 类的构造器对这部分私有域进行初始化， 且使用 super 调用构造器的语句必须是子类构造器的第一条语句。
+        super(name, salary, year, month, day);
+        this.bonus = 0;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
+    public double geSalary() {
+        double baseSalary = super.getSalary();
+        return baseSalary + bonus;
+    }
+}
+```
+
+
+
+
+
+
+
+## Reference
+
+1.[Java核心技术·卷 I（原书第10版）](https://book.douban.com/subject/26880667/)
