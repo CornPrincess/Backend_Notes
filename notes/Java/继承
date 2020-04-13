@@ -1,0 +1,163 @@
+# 继承
+
+利用继承，人们可以基于已存在的类构造一个新类，继承已存在的类就是复用（继承）这些类的方法和域。在此基础上，还可以添加一下新的方法和域，以满足新的需求。
+
+简答的代码示例：
+
+- [ ] 补图
+
+```java
+public class Employee {
+    private String name;
+    private double salary;
+    private LocalDate hireDay;
+
+    public Employee(String name, double salary, int year, int month, int day) {
+        this.name = name;
+        this.salary = salary;
+        this.hireDay = LocalDate.of(year, month, day);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public LocalDate getHireDay() {
+        return hireDay;
+    }
+
+    public void raiseSalary(double byPercent) {
+        double raise = salary * byPercent / 100;
+        salary += raise;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", salary=" + salary +
+                ", hireDay=" + hireDay +
+                '}';
+    }
+}
+```
+
+```java
+public class Manager extends Employee {
+    private double bonus;
+
+    public Manager(String name, double salary, int year, int month, int day) {
+        // Manager 类的构造器不能访问 Employee 类的私有域，所以必须利用 Employee 类的构造器对这部分私有域进行初始化， 且使用 super 调用构造器的语句必须是子类构造器的第一条语句。
+        super(name, salary, year, month, day);
+        this.bonus = 0;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
+    public double geSalary() {
+        double baseSalary = super.getSalary();
+        return baseSalary + bonus;
+    }
+}
+```
+
+上述两个类中，Manager 和 Employee 之间是 “is-a" 的关系” “is-a”是继承的一个明显特征， 根据继承的定义， Manager 类继承了 name， salary， hireDay 三个域以及对应的三个 get 访问器方法。将通用的方法放在超类中，而将具有特殊用途的方法放在子类中，在面向对象程序设计中十分普遍。
+
+> **super 与 this 的不同：**
+>
+> super 不是一个对象的引用，不能将 super 付给另一个对象变量，它只是一个指示编译期调用超类方法的特殊关键字。
+
+## 父类与子类构造器的关系
+
+- 当子类没有带参构造器和无参构造器，父类有带参构造器和无参构造器时， 子类会有默认的无参构造器，并且该无参构造器会默认调用父类无参构造器的方法。
+
+```java
+public class ExtendsTest {
+    public static void main(String[] args) {
+        Son son = new Son(); 
+    }
+}
+
+class Father {
+    private int age;
+
+    public Father() {
+        System.out.println("Father no argument constructor");
+    }
+
+    public Father(int age) {
+        this.age = age;
+    }
+}
+
+class Son extends Father {
+}
+```
+
+```java
+// output
+// Father no argument constructor
+```
+
+- 当子类没有带参构造器和无参构器，父类只有带参构造器时编译时检查会报错，因为当写了带参构造器时系统不会给出默认的无参构造器，此时子类不能调用父类的默认无参构造器。
+
+```java
+class Father {
+    private int age;
+
+    public Father(int age) {
+        this.age = age;
+    }
+}
+
+class Son extends Father { // error There is no default constructor available in Father
+}
+```
+
+- 当子类没有带参构造器而有无参构器，且父类同时有带参构造器和无参构造器时，子类的无参构造器在第一行默认调用父类的无参构造器。
+
+```java
+public class ExtendsTest {
+    public static void main(String[] args) {
+        Son son = new Son();
+    }
+}
+
+class Father {
+    private int age;
+
+    public Father() {
+        System.out.println("Father no argument constructor");
+    }
+
+    public Father(int age) {
+        this.age = age;
+    }
+}
+
+class Son extends Father {
+    private String name;
+
+    public Son() {
+        System.out.println("Son no argument constructor");
+    }
+}
+```
+
+```java
+// output
+// Father no argument constructor
+// Son no argument constructor
+```
+
+### 总结
+
+- 如果子类的构造器没有显示地调用超类的构造器，则会自动地超类默认（没有参数）的构造器，**若父类只存在带惨构造则不会有默认的无参构造器。**
+- 如果父类没有无参构造器，并且子类的构造器又没有显示地调用父类的其他构造器，则Java编译期将报告错误。
+
