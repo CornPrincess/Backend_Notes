@@ -31,15 +31,19 @@
   - [基本类型的包装类](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8C%85%E8%A3%85%E7%B1%BB.md)
   - [运算符](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E8%BF%90%E7%AE%97%E7%AC%A6.md)
   - [字符串](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%AD%97%E7%AC%A6%E4%B8%B2.md)
+  - [数组](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%95%B0%E7%BB%84.md)
+- 面向对象
+  - [继承](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E7%BB%A7%E6%89%BF.md)
+  - [多态](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%A4%9A%E6%80%81.md)
+  - [泛型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E6%B3%9B%E5%9E%8B.md)
 - Java容器
 
 
 ### TODO
- - [ ] foreach中不能修改集合
+ - [ ] 正则表达式
  - [ ] 引用与传值
 
 ## :computer: 计算机组成原理 
-### TODO
 
 ## :desktop_computer: 操作系统 
 
