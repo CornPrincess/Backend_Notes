@@ -1,5 +1,5 @@
-git pull
-cd ../
+cd ..
+sudo git pull
 git add .
 git commit -m "auto commit"
 git push
