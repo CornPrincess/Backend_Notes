@@ -2,7 +2,7 @@
     <a href="#"> <img src="https://badgen.net/twitter/follow/cornprincess"></a>
     <a href="assets/download.md"> <img src="https://badgen.net/github/contributors/CornPrincess/Frontend_Notes"></a>
     <a href="#"> <img src="https://badgen.net/npm/license/lodash"></a>
-    <a href="#"> <img src="https://badgen.net/badge/%e5%85%ac%e4%bc%97%e5%8f%b7/Cornprincess?icon=rss"></a>
+    <!--<a href="#"> <img src="https://badgen.net/badge/%e5%85%ac%e4%bc%97%e5%8f%b7/Cornprincess?icon=rss"></a>-->
     <a href="#"> <img src="https://badgen.net/runkit/cal-badge-icd0onfvrxx6"></a>
 </div>
 <br>
