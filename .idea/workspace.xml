@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="078dacba-e49a-4870-bed8-ed709eaab4ca" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notes/算法与数据结构/数据结构/数据结构经典面试题.md" beforeDir="false" afterPath="$PROJECT_DIR$/notes/算法与数据结构/数据结构/数据结构经典面试题.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -123,7 +124,7 @@
       <workItem from="1582590412067" duration="172000" />
       <workItem from="1583038232524" duration="1216000" />
       <workItem from="1583160595341" duration="354000" />
-      <workItem from="1587393456664" duration="1587000" />
+      <workItem from="1587393456664" duration="2429000" />
     </task>
     <task id="LOCAL-00001" summary="增加二维数组查找">
       <created>1582041971393</created>
@@ -164,10 +165,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9250000" />
+    <option name="totallyTimeSpent" value="10092000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21299255" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
