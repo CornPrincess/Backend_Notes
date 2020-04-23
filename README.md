@@ -11,7 +11,7 @@
 
 | 算法与数据结构  | Java | 计算机组成原理| 操作系统 | 网络协议 | 数据库 | 消息队列 | 缓存 | 分布式 |
 | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: |
-| [:pencil:](#pencil-算法与数据结构)  | [:coffee:](#coffee-Java) | [:computer:](#computer-计算机组成原理) | [:desktop_computer:](#desktop_computer-操作系统) | [:cloud:](#cloud-网络协议) | [:floppy_disk:](#floppy_disk-数据库) | [:postbox:](#postbox-消息队列) | [:tent:](#tent-缓存) | [:earth_americas:](#earth_americas-分布式) |
+| [:pencil:](#pencil-算法与数据结构)  | [:coffee:](#coffee-Java) | [:computer:](#computer-计算机组成原理) | [:fax:](#fax-操作系统) | [:cloud:](#cloud-网络协议) | [:floppy_disk:](#floppy_disk-数据库) | [:postbox:](#postbox-消息队列) | [:tent:](#tent-缓存) | [:earth_americas:](#earth_americas-分布式) |
 <br>
 
 <div align="center">
@@ -49,7 +49,7 @@
 
 ## :computer: 计算机组成原理 
 
-## :desktop_computer: 操作系统 
+## :fax: 操作系统 
 
 ## :cloud: 网络协议
 
