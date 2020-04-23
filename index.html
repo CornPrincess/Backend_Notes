@@ -3,39 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>docsify-demo</title>
+    <title>Backend_Notes</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="Description">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+    <link rel="icon" href="https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/favicon.png" type="image/png">
 </head>
 
 <body>
-<div id="app"></div>
+<div id="app">Please wait...</div>
 <!-- docsify-edit-on-github -->
 <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
 <script>
     window.$docsify = {
-        name: 'docsify-demo',
-        repo: 'https://github.com/Snailclimb/JavaGuide-Interview',
-        maxLevel: 5,//最大支持渲染的标题层级
-        subMaxLevel: 3,
-        homepage: 'README.md',
-        coverpage: false,
+        name: 'Backend_Notes',
+        repo: 'https://github.com/CornPrincess/Backend_Nodets',
+        maxLevel: 6,//最大支持渲染的标题层级
+        subMaxLevel: 4,
+        homepage: './notes/home.md',
+        coverpage: './notes/_coverpage.md',
         loadSidebar: true,
         auto2top: true,//切换页面后是否自动跳转到页面顶部
         //全文搜索
         search: {
-            //maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+            maxAge: 86400000, // 过期时间，单位毫秒，默认一天
             paths: 'auto',
             placeholder: '搜索',
             noData: '找不到结果',
             // 搜索标题的最大程级, 1 - 6
             depth: 3,
         },
+        ga: 'UA-XXXXX-Y',
         plugins: [
-            EditOnGithubPlugin.create('https://github.com/Snailclimb/JavaGuide-Interview/blob/master/')
+            EditOnGithubPlugin.create('https://github.com/CornPrincess/Backend_Nodets/blob/master/'),
         ],
     }
 </script>
@@ -50,6 +52,10 @@
 <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
 <!-- 字数统计 -->
 <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+<!--google search-->
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
+<!--pagination-->
+<script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
 </body>
 
 </html>
