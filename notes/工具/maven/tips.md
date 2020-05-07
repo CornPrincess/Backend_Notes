@@ -1,5 +1,18 @@
+# 常用命令
+
 - `mvn help:system`: 该命令会打印出所有 Java 系统属性和环境变量
+
+
+
+# 常用配置
+
 - 如果公司有需要或者无法访问公共的中央 maven 仓库（ping maven.org 失败）可以通过 `settings.xml` 中的 `proxy` 标签进行设置代理。
+
 - 可以根据电脑配置设置 maven 运行时的 JVM 参数： ` export MAVEN_OPTS="-Xms256m -Xmx512m"`
+
+  
+
+# Debug
+
 - 不要使用 IDE 自带的 maven，因为可能与自己安装的版本不一致，造成构建错误。
 - 当执行 maven 命令失败时可以在后面带上 `-X` 或 `-e`参数来查看堆栈信息

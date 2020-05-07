@@ -36,7 +36,11 @@
   - [运算符](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E8%BF%90%E7%AE%97%E7%AC%A6.md)
   - [字符串](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%AD%97%E7%AC%A6%E4%B8%B2.md)
   - [数组](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%95%B0%E7%BB%84.md)
+  - [按值传递]([https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92.md](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java基础/按值传递.md))
+  - [正则表达式]([https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java基础/正则表达式.md))
+  - [面试题]([https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E9%9D%A2%E8%AF%95%E9%A2%98.md](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java基础/面试题.md))
 - 面向对象
+  - [对象与类]([https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB.md](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/面向对象/对象与类.md))
   - [继承](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E7%BB%A7%E6%89%BF.md)
   - [多态](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%A4%9A%E6%80%81.md)
   - [泛型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E6%B3%9B%E5%9E%8B.md)
@@ -60,7 +64,7 @@
 ## :tent: 缓存 
 
 ## :earth_americas: 分布式
- 
+
 ## :wrench: 工具 
 
 ### 排版

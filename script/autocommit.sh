@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 cd ..
-git pull
-git add .
-git commit -m "auto commit"
-git push
+sudo git pull
+sudo git add .
+sudo git commit -m "auto commit"
+sudo git push

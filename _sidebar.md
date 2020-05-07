@@ -6,12 +6,12 @@
   * 数据结构   
     * [数据结构知识点](notes/算法与数据结构/数据结构/数据结构知识点.md)
     * [数据结构经典面试题](notes/算法与数据结构/数据结构/数据结构经典面试题.md)
-   
+  
   * 算法
   
   * 工具
     * [工具](notes/算法与数据结构/工具/工具.md)
- 
+
 
 * Java
   * Java基础 
@@ -22,11 +22,12 @@
     * [数组](notes/Java/Java基础/数组.md)
     * [正则表达式](notes/Java/Java基础/正则表达式.md)
     * [运算符](notes/Java/Java基础/运算符.md)
-
+* [面试题](notes/Java/Java基础/面试题.md))
   * 面向对象   
+    * [对象与类](notes/Java/面向对象/对象与类.md)
     * [继承](notes/Java/面向对象/继承.md)
     * [泛型](notes/Java/面向对象/泛型.md)
-    * [多态](notes/Java/面向对象/多态.md)
-
+  * [多态](notes/Java/面向对象/多态.md)
+  
   
 
