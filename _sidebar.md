@@ -22,12 +22,16 @@
     * [数组](notes/Java/Java基础/数组.md)
     * [正则表达式](notes/Java/Java基础/正则表达式.md)
     * [运算符](notes/Java/Java基础/运算符.md)
-* [面试题](notes/Java/Java基础/面试题.md))
+    * [lambda表达式](notes/Java/Java基础/lambda表达式.md)
+    * [面试题](notes/Java/Java基础/面试题.md)
   * 面向对象   
     * [对象与类](notes/Java/面向对象/对象与类.md)
     * [继承](notes/Java/面向对象/继承.md)
+    * [多态](notes/Java/面向对象/多态.md)
     * [泛型](notes/Java/面向对象/泛型.md)
-  * [多态](notes/Java/面向对象/多态.md)
+    * [内部类](notes/Java/面向对象/内部类.md)
+    * [接口](notes/Java/面向对象/接口.md)
+    * [Object方法](notes/Java/面向对象/Object方法.md)
   
   
 

@@ -38,12 +38,16 @@
   - [数组](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%95%B0%E7%BB%84.md)
   - [按值传递](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92.md)
   - [正则表达式](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+  - [lambda表达式](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
   - [面试题](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 - 面向对象
   - [对象与类](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB.md)
   - [继承](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E7%BB%A7%E6%89%BF.md)
   - [多态](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%A4%9A%E6%80%81.md)
   - [泛型](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E6%B3%9B%E5%9E%8B.md)
+  - [内部类](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%86%85%E9%83%A8%E7%B1%BB.md)
+  - [接口](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E6%8E%A5%E5%8F%A3.md)
+  - [Object方法](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/Object%E6%96%B9%E6%B3%95.md)
 - Java容器
 
 
