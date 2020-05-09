@@ -1,6 +1,89 @@
+# Object中的方法
+
+Object 类是 Java 中所有类的超类，在 Java 中每个类都是由它扩展来的，只有基本类型（primitive types）不是对象，**剩下的引用类型都是对象，包括对象数组或者基本类型数组。**
+
+```java
+Object obj = new int[10] // ok
+```
+
+Object 方法概览：
+
+```java
+public final native Class<?> getClass();
+public native int hashCode();
+public boolean equals(Object obj) {}
+protected native Object clone() throws CloneNotSupportedException;
+public String toString() {}
+public final native void notify();
+public final native void notifyAll();
+public final native void wait(long timeout) throws InterruptedException;
+public final void wait(long timeout, int nanos) throws InterruptedException{}
+public final void wait() throws InterruptedException {}
+protected void finalize() throws Throwable {} // Deprecated
+```
+
 ## equals 方法
 
-我们在重写自己的 equals 方法时需要注意到自反性这个原则，即` x.equals(y) == y.equals(x)`，在前面的代码中我们用到了 `getClass` 这个方法，在比较过程中，当发现 x 与 y 类不相等则返回 false， 在这里我们必须将 `getClass` 方法和 `instanceof` 方法进行比较。
+```java
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+```
+
+阅读源码可知，**Object 中的 equals 方法是比较两个对象是否有相同的引用**，但是这在有些情况下是没有意义的，更多的时候是想比较两个对象的状态是否相同。
+
+> The `equals` method implements an equivalence relation on non-null object references:
+>
+> - It is *reflexive*: for any non-null reference value `x`, `x.equals(x)` should return `true`.
+> - It is *symmetric*: for any non-null reference values `x` and `y`, `x.equals(y)` should return `true` if and only if `y.equals(x)` returns `true`.
+> - It is *transitive*: for any non-null reference values `x`, `y`, and `z`, if `x.equals(y)` returns `true` and `y.equals(z)` returns `true`, then `x.equals(z)` should return `true`.
+> - It is *consistent*: for any non-null reference values `x` and `y`, multiple invocations of `x.equals(y)` consistently return `true` or consistently return `false`, provided no information used in `equals` comparisons on the objects is modified.
+> - For any non-null reference value `x`, `x.equals(null)` should return `false`.<sup>[2]</sup>
+
+由 JDK 文档中可知，实现了 non-null 对象引用的相等关系的 equals 方法有五个特性：*reflexive*（自反性），*symmetric*（对称性），*transitive*（传递性），*consistent*（一致性），与 null 相比返回 false
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    @Override
+    public boolean equals(Object o) {
+        // a quick test to see if the objects are identical
+        if (this == o) return true;
+        // if o == null or the classes don't match, they can't be equal
+        if (o == null || getClass() != o.getClass()) return false;
+
+        // now we know o is a non-null Person
+        Person person = (Person) o;
+
+        // test whether the fields have identical values
+        if (age != person.age) return false;
+        return Objects.equals(name, person.name);
+    }
+}
+```
+
+注意，比较可能为空的变量时可以使用` Objects.equals()`
+
+子类的 equals 方法:
+
+```java
+public class Student extends Person {
+    private String school;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false;
+
+        Student student = (Student) o;
+
+        return Objects.equals(school, student.school);
+    }
+}
+```
+
+我们在重写自己的 equals 方法时需要注意到**自反性**这个原则，即` x.equals(y) == y.equals(x)`，在前面的代码中我们用到了 `getClass` 这个方法，在比较过程中，当发现 x 与 y 类不相等则返回 false， 在这里我们必须将 `getClass` 方法和 `instanceof` 方法进行比较。
 
 ### instanceof
 
@@ -146,7 +229,7 @@ class Son extends Father implements MyInterface{
 > - If two objects are equal according to the `equals(Object)` method, then calling the `hashCode` method on each of the two objects must produce the same integer result.
 > - It is *not* required that if two objects are unequal according to the [`equals(java.lang.Object)`](https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals(java.lang.Object)) method, then calling the `hashCode` method on each of the two objects must produce distinct integer results. However, the programmer should be aware that producing distinct integer results for unequal objects may improve the performance of hash tables.
 >
-> As much as is reasonably practical, the hashCode method defined by class `Object` does return distinct integers for distinct objects. (This is typically implemented by converting the internal address of the object into an integer, but this implementation technique is not required by the JavaTM programming language.)<sup>[4]</sup>
+> As much as is reasonably practical, the hashCode method defined by class `Object` does return distinct integers for distinct objects. (This is typically implemented by converting the internal address of the object into an integer, but this implementation technique is not required by the JavaTM programming language.)<sup>[2]</sup>
 >
 > 翻译：
 >
@@ -427,9 +510,9 @@ class Apple {
 
 ## Referencee
 
-3.[Equality, Relational, and Conditional Operators](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)
+1. Java核心技术卷一
+2. [Class Object](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object))
 
-4.[Class Object](https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#getClass())
+3. [Equality, Relational, and Conditional Operators](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)
 
-5.[native keyword in java](https://www.geeksforgeeks.org/native-keyword-java/)
-
+4. [native keyword in java](https://www.geeksforgeeks.org/native-keyword-java/)
