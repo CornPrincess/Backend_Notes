@@ -23,6 +23,7 @@
     * [正则表达式](notes/Java/Java基础/正则表达式.md)
     * [运算符](notes/Java/Java基础/运算符.md)
     * [lambda表达式](notes/Java/Java基础/lambda表达式.md)
+    * [异常](notes/Java/Java基础/异常.md)
     * [面试题](notes/Java/Java基础/面试题.md)
   * 面向对象   
     * [对象与类](notes/Java/面向对象/对象与类.md)
