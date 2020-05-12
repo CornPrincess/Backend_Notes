@@ -168,6 +168,20 @@ private void add(E e, Object[] elementData, int s) {
   size = s + 1;
 }
 
+public void add(int index, E element) {
+    rangeCheckForAdd(index);
+    modCount++;
+    final int s;
+    Object[] elementData;
+    if ((s = size) == (elementData = this.elementData).length)
+        elementData = grow();
+    System.arraycopy(elementData, index,
+                     elementData, index + 1,
+                     s - index);
+    elementData[index] = element;
+    size = s + 1;
+}
+
 private Object[] grow() {
   return grow(size + 1);
 }
@@ -225,6 +239,8 @@ elementData的扩容机制如下：
 
 扩容使用的方法为：`Arrays.copyOf(T[] original, int newLength)` `System.arraycopy(Object src,  int  srcPos, Object dest, int destPos, int length)`
 
+**扩容的时机**：当 `size == elementData.length`时，会进行扩容。
+
 ```java
 public static <T> T[] copyOf(T[] original, int newLength) {
   return (T[]) copyOf(original, newLength, original.getClass());
@@ -234,11 +250,23 @@ public static <T> T[] copyOf(T[] original, int newLength) {
 public static native void arraycopy(Object src,  int  srcPos,
                                     Object dest, int destPos,
                                     int length);
+
+public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
+    @SuppressWarnings("unchecked")
+    T[] copy = ((Object)newType == (Object)Object[].class)
+        ? (T[]) new Object[newLength]
+        : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+    System.arraycopy(original, 0, copy, 0,
+                     Math.min(original.length, newLength));
+    return copy;
+}
 ```
 
+### 原理
 
+我们可以看到，两个 add 方法都是调用 ` System.arraycopy` 方法，通过数组的拷贝来完成 add 操作，因此 ArrayList 增加元素速度较慢,并且每次 add 操作都会 `modCount++`
 
-对应 JDK8 源码
+### 对应 JDK8 源码
 
 ```java
 public boolean add(E e) {
@@ -306,7 +334,152 @@ private void add(E e, Object[] elementData, int s) {
 
 ## remove方法
 
- -
+ ```java
+public E remove(int index) {
+    Objects.checkIndex(index, size);
+    final Object[] es = elementData;
+
+    @SuppressWarnings("unchecked") E oldValue = (E) es[index];
+    fastRemove(es, index);
+
+    return oldValue;
+}
+
+public boolean remove(Object o) {
+    final Object[] es = elementData;
+    final int size = this.size;
+    int i = 0;
+    found: {
+        if (o == null) {
+            for (; i < size; i++)
+                if (es[i] == null)
+                    break found;
+        } else {
+            for (; i < size; i++)
+                if (o.equals(es[i]))
+                    break found;
+        }
+        return false;
+    }
+    fastRemove(es, i);
+    return true;
+}
+
+private void fastRemove(Object[] es, int i) {
+    modCount++;
+    final int newSize;
+    if ((newSize = size - 1) > i)
+        System.arraycopy(es, i + 1, es, i, newSize - i);
+    es[size = newSize] = null;
+}
+ ```
+
+### 原理
+
+观察上述代码我们可以知道 remove 方法主要通过底层调用 `System.arraycopy(es, i + 1, es, i, newSize - i);` 通过数组的拷贝来完成，这也是为什么 ArrayList 删除元素较慢，并且每次remove 操作都会 `modCount++`
+
+
+
+## set方法
+
+```java
+public E set(int index, E element) {
+    Objects.checkIndex(index, size);
+    E oldValue = elementData(index);
+    elementData[index] = element;
+    return oldValue;
+}
+
+public static int checkIndex(int index, int length) {
+    return Preconditions.checkIndex(index, length, null);
+}
+
+public static <X extends RuntimeException> int checkIndex(int index, int length,
+                   BiFunction<String, List<Integer>, X> oobef) {
+    if (index < 0 || index >= length)
+        throw outOfBoundsCheckIndex(oobef, index, length);
+    return index;
+}
+```
+
+ **Set 方法很简单，但是这里会有一个 bug 需要注意：**
+
+```java
+List<Integer> list = new ArrayList<>(11);
+System.out.println(list.size()); // 0
+list.set(0, 1); // throw java.lang.IndexOutOfBoundsException
+```
+
+通过 `new ArrayList<>(11);` `new ArrayList<>();` 方法创建的 **ArrayList 对象初始的 size 都为 0，set 中的 index 必须小于 size**， 因此 进行 set 操作是就会报 `java.lang.IndexOutOfBoundsException`
+
+
+
+## get方法
+
+```java
+public E get(int index) {
+    Objects.checkIndex(index, size);
+    return elementData(index);
+}
+```
+
+
+
+## 序列化
+
+```java
+transient Object[] elementData; // non-private to simplify nested class access
+```
+
+ArrayList 基于数组实现，具有动态扩容属性，因此 elementData 可能不会被完全使用，这种情况下就没必要全部进行序列化，所以会用 `transient` 进行修饰，我们可以看到` ArrayList` 实现了自己的` writeObject` `readObject` 方法，**来控制只序列化数组中 有元素填充的那部分内容**，并且 `writeObject` 过程中会检查是否有结构性修改，使用了 `fail-fas` t机制。
+
+```java
+private void writeObject(java.io.ObjectOutputStream s)
+    throws java.io.IOException {
+    // Write out element count, and any hidden stuff
+    int expectedModCount = modCount;
+    s.defaultWriteObject();
+
+    // Write out size as capacity for behavioral compatibility with clone()
+    s.writeInt(size);
+
+    // Write out all elements in the proper order.
+    for (int i=0; i<size; i++) {
+        s.writeObject(elementData[i]);
+    }
+
+    if (modCount != expectedModCount) {
+        throw new ConcurrentModificationException();
+    }
+}
+
+private void readObject(java.io.ObjectInputStream s)
+    throws java.io.IOException, ClassNotFoundException {
+
+    // Read in size, and any hidden stuff
+    s.defaultReadObject();
+
+    // Read in capacity
+    s.readInt(); // ignored
+
+    if (size > 0) {
+        // like clone(), allocate array based upon size not capacity
+        SharedSecrets.getJavaObjectInputStreamAccess().checkArray(s, Object[].class, size);
+        Object[] elements = new Object[size];
+
+        // Read in all elements in the proper order.
+        for (int i = 0; i < size; i++) {
+            elements[i] = s.readObject();
+        }
+
+        elementData = elements;
+    } else if (size == 0) {
+        elementData = EMPTY_ELEMENTDATA;
+    } else {
+        throw new java.io.InvalidObjectException("Invalid size: " + size);
+    }
+}
+```
 
 
 
@@ -366,4 +539,3 @@ list.remove(1);
 3. [Java container source code-ArrayList source code analysis (based on JDK8)](https://programming.vip/docs/java-container-source-code-arraylist-source-code-analysis-based-on-jdk8.html)
 4. [Class AbstractList](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html)
 5. [From Java code to Java heap](https://www.ibm.com/developerworks/java/library/j-codetoheap/index.html)
-
