@@ -5,7 +5,7 @@
 - Vector 底层有数组实现，支持动态扩容
 - Vector 是线程安全的，是由 `synchronized`实现的， 效率较低
 - Vector 扩容时数组长度会变成原来两倍或者原长度加上capacityIncrement， ArrayList 扩大为原来1.5倍。
-- Vector 支出存储多个相同的元素（包括多个null）
+- Vector 支出存储多个相同的元素（包括多个null），且是有序的。
 
 ## 类名
 
