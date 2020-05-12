@@ -41,8 +41,272 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
 public abstract class AbstractCollection<E> implements Collection<E>
 ```
 
-- `ArrayList` 继承自  `AbstractList`，这样做的好处是可以减少重复代码， ArrayList 只需要关注自己独有的方法即可。
-- `AbstractList` 实现了 `List` 接口，`ArrayList` 又实现了一遍 `List` 接口
+> This class provides a skeletal implementation of the [`List`](https://docs.oracle.com/javase/7/docs/api/java/util/List.html) interface to minimize the effort required to implement this interface backed by a "random access" data store (such as an array). For sequential access data (such as a linked list), [`AbstractSequentialList`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractSequentialList.html) should be used in preference to this class.
+>
+> To implement an unmodifiable list, the programmer needs only to extend this class and provide implementations for the [`get(int)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#get(int)) and [`size()`](https://docs.oracle.com/javase/7/docs/api/java/util/List.html#size()) methods.
+>
+> To implement a modifiable list, the programmer must additionally override the [`set(int, E)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#set(int, E)) method (which otherwise throws an `UnsupportedOperationException`). If the list is variable-size the programmer must additionally override the [`add(int, E)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#add(int, E)) and [`remove(int)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#remove(int)) methods.
+>
+> The programmer should generally provide a void (no argument) and collection constructor, as per the recommendation in the [`Collection`](https://docs.oracle.com/javase/7/docs/api/java/util/Collection.html) interface specification.
+>
+> Unlike the other abstract collection implementations, the programmer does *not* have to provide an iterator implementation; the iterator and list iterator are implemented by this class, on top of the "random access" methods: [`get(int)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#get(int)), [`set(int, E)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#set(int, E)), [`add(int, E)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#add(int, E)) and [`remove(int)`](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html#remove(int)).[4]
+
+- 由上述引用可知，JDK 设计 `AbstractList`的目的是为了提供一个实现 List (底层为数组，支持 random access)的骨架，开发者可以继承 `AbstractList` 开发自己的 `List` 实现类。`ArrayList` 继承自  `AbstractList`，这样做的好处是可以减少重复代码， ArrayList 只需要关注自己独有的方法即可。
+- `AbstractList` 实现了 `List` 接口，`ArrayList` 又实现了一遍 `List` 接口，是为了重写一些自己特有的方法。
+
+```java
+public interface RandomAccess {
+}
+```
+
+```java
+public interface Cloneable {
+}
+```
+
+```java
+public interface Serializable {
+}
+```
+
+`RandomAccess`， `Cloneable` ，`Serializable` 三个都是标记接口，用来表式 `ArrayList` 支持 随机读取，克隆和序列化，反序列化。
+
+## 参数
+
+```java
+private static final long serialVersionUID = 8683452581122892189L;
+
+// 默认初始化 ArrayList capacity 10
+private static final int DEFAULT_CAPACITY = 10;
+
+// 给空实例的共享空数组
+private static final Object[] EMPTY_ELEMENTDATA = {};
+
+// 为默认size的空实例提供的空数组
+private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+
+/**
+ * The array buffer into which the elements of the ArrayList are stored.
+ * The capacity of the ArrayList is the length of this array buffer. Any
+ * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+ * will be expanded to DEFAULT_CAPACITY when the first element is added.
+ */
+transient Object[] elementData; // non-private to simplify nested class access
+
+// The size of the ArrayList (the number of elements it contains).
+private int size;
+
+/**
+ * The maximum size of array to allocate (unless necessary).
+ * Some VMs reserve some header words in an array.
+ * Attempts to allocate larger arrays may result in
+ * OutOfMemoryError: Requested array size exceeds VM limit
+ */
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+```
+
+ArrayList 设置了默认的最大 `size` 为 `Integer.MAX_VALUE - 8`，因为存储了 Array 的头部信息，所以这里需要减去8，我们可以在 IBM 的技术博客上看到关于 Array 的头文件描述
+
+> ## Anatomy of a Java array object
+>
+> The shape and structure of an array object, such as an array of `int` values, is similar to that of a standard Java object. The primary difference is that the array object has an additional piece of metadata that denotes the array's size. An array object's metadata, then, consists of:
+>
+> - **Class** : A pointer to the class information, which describes the object type. In the case of an array of `int` fields, this is a pointer to the `int[]` class.
+> - **Flags** : A collection of flags that describe the state of the object, including the hash code for the object if it has one, and the shape of the object (that is, whether or not the object is an array).
+> - **Lock** : The synchronization information for the object — that is, whether the object is currently synchronized.
+> - **Size** : The size of the array.
+>
+> ![Array Object 32bit](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/ArrayObject.png)
+>
+> ![Array Object 64bit](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/ArrayObject2.png)
+>
+> Source from: [5]
+
+`elementData` 使用 `transient `进行修饰意味着可以不用被序列化.
+
+## 构造器
+
+```java
+public ArrayList() {
+  this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+```
+
+```java
+public ArrayList(int initialCapacity) {
+  if (initialCapacity > 0) {
+    this.elementData = new Object[initialCapacity];
+  } else if (initialCapacity == 0) {
+    this.elementData = EMPTY_ELEMENTDATA;
+  } else {
+    throw new IllegalArgumentException("Illegal Capacity: "+
+                                       initialCapacity);
+  }
+}
+```
+
+
+
+## add方法
+
+```java
+public boolean add(E e) {
+  modCount++;
+  add(e, elementData, size);
+  return true;
+}
+
+/**
+ * This helper method split out from add(E) to keep method
+ * bytecode size under 35 (the -XX:MaxInlineSize default value),
+ * which helps when add(E) is called in a C1-compiled loop.
+ */
+private void add(E e, Object[] elementData, int s) {
+  if (s == elementData.length)
+    elementData = grow();
+  elementData[s] = e;
+  size = s + 1;
+}
+
+private Object[] grow() {
+  return grow(size + 1);
+}
+
+private Object[] grow(int minCapacity) {
+  return elementData = Arrays.copyOf(elementData,
+                                     newCapacity(minCapacity));
+}
+
+/**
+ * Returns a capacity at least as large as the given minimum capacity.
+ * Returns the current capacity increased by 50% if that suffices.
+ * Will not return a capacity greater than MAX_ARRAY_SIZE unless
+ * the given minimum capacity is greater than MAX_ARRAY_SIZE.
+ */
+private int newCapacity(int minCapacity) {
+  // overflow-conscious code
+  int oldCapacity = elementData.length;
+  int newCapacity = oldCapacity + (oldCapacity >> 1);
+  if (newCapacity - minCapacity <= 0) {
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
+      return Math.max(DEFAULT_CAPACITY, minCapacity);
+    if (minCapacity < 0) // overflow
+      throw new OutOfMemoryError();
+    return minCapacity;
+  }
+  return (newCapacity - MAX_ARRAY_SIZE <= 0)
+    ? newCapacity
+    : hugeCapacity(minCapacity);
+}
+
+private static int hugeCapacity(int minCapacity) {
+  if (minCapacity < 0) // overflow
+    throw new OutOfMemoryError();
+  return (minCapacity > MAX_ARRAY_SIZE)
+    ? Integer.MAX_VALUE
+    : MAX_ARRAY_SIZE;
+}
+```
+
+### 扩容
+
+elementData的扩容机制如下：
+
+- 若（当前数组长度的1.5倍）<=（当前数组元素个数+1）
+
+  - 若 ArrayList 对象是用无参构造器创建的，第一次调用 `add` 时计算出的 `newCapacity` 为 `DEFAULT_CAPACITY = 10`
+  - 若 size  + 1 < 0 (overflow)，抛出`OutOfMemoryError`
+  - 其他情况返回 size + 1
+
+- 若（当前数组长度的1.5倍）>（当前数组元素个数+1）
+
+  - 若 newCapacity <= MAX_ARRAY_SIZE， 返回 newCapacity（当前数组长度的1.5倍）
+- 否则`return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;`
+
+扩容使用的方法为：`Arrays.copyOf(T[] original, int newLength)` `System.arraycopy(Object src,  int  srcPos, Object dest, int destPos, int length)`
+
+```java
+public static <T> T[] copyOf(T[] original, int newLength) {
+  return (T[]) copyOf(original, newLength, original.getClass());
+}
+
+@HotSpotIntrinsicCandidate
+public static native void arraycopy(Object src,  int  srcPos,
+                                    Object dest, int destPos,
+                                    int length);
+```
+
+
+
+对应 JDK8 源码
+
+```java
+public boolean add(E e) {
+  ensureCapacityInternal(size + 1);  // Increments modCount!!
+  elementData[size++] = e;
+  return true;
+}
+
+private void ensureCapacityInternal(int minCapacity) {
+  ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+}
+
+private void ensureExplicitCapacity(int minCapacity) {
+  modCount++;
+
+  // overflow-conscious code
+  if (minCapacity - elementData.length > 0)
+    grow(minCapacity);
+}
+
+private void grow(int minCapacity) {
+  // overflow-conscious code
+  int oldCapacity = elementData.length;
+  int newCapacity = oldCapacity + (oldCapacity >> 1);
+  if (newCapacity - minCapacity < 0)
+    newCapacity = minCapacity;
+  if (newCapacity - MAX_ARRAY_SIZE > 0)
+    newCapacity = hugeCapacity(minCapacity);
+  // minCapacity is usually close to size, so this is a win:
+  elementData = Arrays.copyOf(elementData, newCapacity);
+}
+
+private static int hugeCapacity(int minCapacity) {
+  if (minCapacity < 0) // overflow
+    throw new OutOfMemoryError();
+  return (minCapacity > MAX_ARRAY_SIZE) ?
+    Integer.MAX_VALUE :
+  MAX_ARRAY_SIZE;
+}
+```
+
+我们观察源码可知，JDK8 中 add 方法大体上和 JDK11 中相同，扩容的原理一样，不过 JDK11 将 `add(E element)` 进行了拆分，这样可以使用内联方法，减少函数调用的成本，做了改进。
+
+```java
+public boolean add(E e) {
+  modCount++;
+  add(e, elementData, size);
+  return true;
+}
+
+/**
+ * This helper method split out from add(E) to keep method
+ * bytecode size under 35 (the -XX:MaxInlineSize default value),
+ * which helps when add(E) is called in a C1-compiled loop.
+ */
+private void add(E e, Object[] elementData, int s) {
+  if (s == elementData.length)
+    elementData = grow();
+  elementData[s] = e;
+  size = s + 1;
+}
+```
+
+- [ ] todo 分析内联减少函数调用成本的原理
+
+## remove方法
+
+ -
 
 
 
@@ -100,4 +364,6 @@ list.remove(1);
 1. [Java核心技术卷一](https://book.douban.com/subject/1781451/)
 2. [Class ArrayList](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/ArrayList.html)
 3. [Java container source code-ArrayList source code analysis (based on JDK8)](https://programming.vip/docs/java-container-source-code-arraylist-source-code-analysis-based-on-jdk8.html)
+4. [Class AbstractList](https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html)
+5. [From Java code to Java heap](https://www.ibm.com/developerworks/java/library/j-codetoheap/index.html)
 
