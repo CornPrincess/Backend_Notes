@@ -15,10 +15,6 @@
 
 
 
-- [ ] ```
-  amortized constant time
-  ```
-
 > ```
 > amortized constant time
 > 
@@ -330,8 +326,6 @@ private void add(E e, Object[] elementData, int s) {
 }
 ```
 
-- [ ] todo 分析内联减少函数调用成本的原理
-
 ## remove方法
 
  ```java
@@ -480,6 +474,8 @@ private void readObject(java.io.ObjectInputStream s)
     }
 }
 ```
+
+
 
 
 
