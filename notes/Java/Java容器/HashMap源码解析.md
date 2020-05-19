@@ -118,11 +118,18 @@ final Node<K,V> getNode(int hash, Object key) {
 
 ### DEFAULT_LOAD_FACTOR
 
+> Because TreeNodes are about twice the size of regular nodes, we use them only when bins contain enough nodes to warrant use (see TREEIFY_THRESHOLD). And when they become too small (due to removal or resizing) they are converted back to plain bins.  In usages with well-distributed user hashCodes, tree bins are rarely used.  Ideally, under random hashCodes, the frequency of nodes in bins follows a Poisson distribution
+>
+> 翻译：
+>
+> treeNodes 大约是 普通 nodes 两倍，因此我们只在达到 TREEIFY_THRESHOLD（8）时会使用， 并且当 treeNodes 数量变少达到 UNTREEIFY_THRESHOLD（6）时，会将树转变为正常 node。使用hashcode使得节点散列正常，红黑树在平时很少用到。理论上，在随机的 hashcode 情况下，节点出现的概率遵从 Poisson 分布
+
+
 默认的装载因子为 0.75，这是因为bin（指数组中的一个桶） 中节点出现的概率遵循Poisson分布（泊松分布），此时load factor = 0.75， λ=0.5
 $$
 P(X=k) =\frac{\lambda^ke^{-\lambda}}{k!}
 $$
-假如在长度为 16 的数组中放入0.75 * 16 = 12个数据时，数组中某个下表放入 k 个数据（即数组后面链表中的数据量）的概率如下
+假如在长度为 16 的数组中放入0.75 * 16 = 12个数据时，数组中某个下标放入 k 个数据（即数组后面链表中的数据量）的概率如下
 
 | 存储数据量 |    概率    |
 | :--------: | :--------: |
@@ -136,7 +143,7 @@ $$
 |     7      | 0.00000094 |
 |     8      | 0.00000006 |
 
-
+我们可以看到，一个下标中存在8个nodes的概率是很低的，因此 此时将链表转为 treeNode是合乎情理的，并且性价比较高 ，可以通过增加有限的空间消耗换取时间消耗上的减少。
 
 ## 域
 
@@ -188,7 +195,9 @@ int threshold;
 final float loadFactor;
 ```
 
+### threshold
 
+???
 
  ## 构造函数
 
@@ -361,6 +370,51 @@ static class Node<K,V> implements Map.Entry<K,V> {
     }
     return false;
   }
+}
+```
+
+
+
+## 重要方法
+
+### 确定哈希桶数组索引位置
+
+```java
+/**
+ * Computes key.hashCode() and spreads (XORs) higher bits of hash
+ * to lower.  Because the table uses power-of-two masking, sets of
+ * hashes that vary only in bits above the current mask will
+ * always collide. (Among known examples are sets of Float keys
+ * holding consecutive whole numbers in small tables.)  So we
+ * apply a transform that spreads the impact of higher bits
+ * downward. There is a tradeoff between speed, utility, and
+ * quality of bit-spreading. Because many common sets of hashes
+ * are already reasonably distributed (so don't benefit from
+ * spreading), and because we use trees to handle large sets of
+ * collisions in bins, we just XOR some shifted bits in the
+ * cheapest possible way to reduce systematic lossage, as well as
+ * to incorporate impact of the highest bits that would otherwise
+ * never be used in index calculations because of table bounds.
+ * 
+ * 翻译：
+ * 计算 key.hashCode()的值，并且将hash的高位通过异或（XORs）扩展到地位，由于table     	* 使用2的指数进行masking，因此仅在其范围进行mask的hash将会发生冲突（已知的例子为在     	* 小table中连续的Float keys）所以这里使用了转换将高位延展到地位，这是在speed 		 	* utility和quality of bit-spreading之间的tradeoff，因为很多常见的hash已经合理       * 地分布 （所以不会从spread中受益），并且我哦们使用红黑树来处理多hash冲突，我们只XOR 	* 一 些位来减少系统缺失，并且否则高位的不准确影响不会影响到index 计算。
+ *
+ */
+static final int hash(Object key) {
+  int h;
+  return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+
+//jdk1.7的源码，jdk1.8没有这个方法，但是实现原理一样的
+static int indexFor(int h, int length) {  
+  return h & (length-1);  
+}
+
+// JDK 1.8 源码
+final Node<K,V> getNode(int hash, Object key) {
+  // ...
+	(first = tab[(n - 1) & hash]) != null)
+  // ...
 }
 ```
 
