@@ -8,6 +8,8 @@
 
 - 遍历的顺序不确定，并且不能保证顺序不改变
 
+- 扩容是一个特别耗性能的操作，所以 在使用时可以先给一个大致的容量
+
 - 允许一条记录的 key 为 null，且允许多条记录的 value 为 null
 
 - 线程不安全，即同一时刻有多个线程同时写 HashMap，对HashMap 造成结构性变化（A structural modification is any operation that adds or deletes one or more mappings; merely changing the value associated with a key that an instance already contains is not a structural modification.），可能会导致数据不一致，此时可以使用一下方法获得同步方法：
@@ -671,7 +673,44 @@ final Node<K,V>[] resize() {
 
 注意：
 
-JDK7中HashMap使用了链表的头插法，在扩容时会讲链表进行导致，JDK8以后才有尾插法，不存在这个问题。
+**JDK7中HashMap使用了链表的头插法，在多线程环境下容易出现死循环，JDK8以后才有尾插法，不存在这个问题。**具体可看这篇 [面试官： HashMap 为什么线程不安全？](https://mp.weixin.qq.com/s/ZyvrxC3gs92OEME3QzfF_Q)
+
+### treeifyBin 方法
+
+```java
+/**
+ * Replaces all linked nodes in bin at index for given hash unless
+ * table is too small, in which case resizes instead.
+ */
+final void treeifyBin(Node<K,V>[] tab, int hash) {
+  int n, index; Node<K,V> e;
+  // 如果table为null或者长度小于64时不转换为红黑树，此时进行扩容
+  if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+    resize();
+  // 如果数组该索引的元素不为null
+  else if ((e = tab[index = (n - 1) & hash]) != null) {
+    TreeNode<K,V> hd = null, tl = null;
+    // 循环遍历链表，将链表转为红黑树
+    do {
+      // 根据链表的 node 创建 TreeNode
+      TreeNode<K,V> p = replacementTreeNode(e, null);
+      if (tl == null)
+        hd = p;
+      else {
+        p.prev = tl;
+        tl.next = p;
+      }
+      tl = p;
+    } while ((e = e.next) != null);
+    if ((tab[index] = hd) != null)
+      hd.treeify(tab);
+  }
+}
+```
+
+我们可以看到这里用到了 `MIN_TREEIFY_CAPACITY(64)` 参数，如果链表长度大于等于8，但是Node数组长度小于64，此时不会转为红黑树，而是进行 `resize()` 扩容，红黑树虽然查询时间复杂度为O(logN)，但是空间占用大HashMap的设计是尽量不用红黑树。
+
+
 
 ## fail fast
 
@@ -684,3 +723,4 @@ JDK7中HashMap使用了链表的头插法，在扩容时会讲链表进行导致
 1. [Java核心技术卷一](https://book.douban.com/subject/1781451/)
 2. [Java 8系列之重新认识HashMap](https://tech.meituan.com/2016/06/24/java-hashmap.html)
 3. [JDK11源码--HashMap源码分析](https://blog.csdn.net/liubenlong007/article/details/87937209)
+4. [面试官： HashMap 为什么线程不安全？](https://mp.weixin.qq.com/s/ZyvrxC3gs92OEME3QzfF_Q)

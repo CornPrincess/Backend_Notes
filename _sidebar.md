@@ -38,6 +38,7 @@
     * [ArrayList源码解析](notes/Java/Java容器/ArrayList源码解析.md)
     * [LinkedList源码解析](notes/Java/Java容器/LinkedList源码解析.md)
     * [Vector源码解析](notes/Java/Java容器/Vector源码解析.md)
+    * [HashMap源码解析](notes/Java/Java容器/HashMap源码解析.md)
   
   
 
