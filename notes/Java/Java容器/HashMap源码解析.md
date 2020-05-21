@@ -710,7 +710,45 @@ final void treeifyBin(Node<K,V>[] tab, int hash) {
 
 我们可以看到这里用到了 `MIN_TREEIFY_CAPACITY(64)` 参数，如果链表长度大于等于8，但是Node数组长度小于64，此时不会转为红黑树，而是进行 `resize()` 扩容，红黑树虽然查询时间复杂度为O(logN)，但是空间占用大HashMap的设计是尽量不用红黑树。
 
+### get 方法
 
+```java
+public V get(Object key) {
+  Node<K,V> e;
+  return (e = getNode(hash(key), key)) == null ? null : e.value;
+}
+
+final Node<K,V> getNode(int hash, Object key) {
+  Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
+  // 判断table不为null，且table长度大于0，且对应索引的第一个node不为null
+  if ((tab = table) != null && (n = tab.length) > 0 &&
+      (first = tab[(n - 1) & hash]) != null) {
+    if (first.hash == hash && // always check first node
+        ((k = first.key) == key || (key != null && key.equals(k))))
+      return first;
+    if ((e = first.next) != null) {
+      if (first instanceof TreeNode)
+        return ((TreeNode<K,V>)first).getTreeNode(hash, key);
+      do {
+        if (e.hash == hash &&
+            ((k = e.key) == key || (key != null && key.equals(k))))
+          return e;
+      } while ((e = e.next) != null);
+    }
+  }
+  return null;
+}
+```
+
+通过源码我们整理出 get 的步骤大致如下：
+
+- 判断table不为null，且table长度大于0，且对应索引的第一个node不为null，如果不满足直接返回null
+- 判断通过key计算出的hash与当前索引第一个节点的hash是否相同，并且key是否相同（满足equals方法或者引用相同），相同则返回当前第一个节点，不同继续下面的步骤。
+- 若第一个节点first为红黑树，则用红黑树算法取对应value，若是链表，则循环链表，按照上面同样的方法，想比较hash是否相同，在比较key是否相同。
+
+红黑树查询时间复杂度：O(logN)
+
+链表查询时间复杂度：O(N)
 
 ## fail fast
 
