@@ -377,6 +377,8 @@ static class Node<K,V> implements Map.Entry<K,V> {
 
 ## 重要方法
 
+首先明白一下概念，HashMap就是使用哈希表来存储的。哈希表为解决冲突，可以采用开放地址法和链地址法等来解决问题，Java中HashMap采用了链地址法。链地址法，简单来说，就是数组加链表的结合。在每个数组元素上都一个链表结构，当数据被Hash后，得到数组下标，把数据放在对应下标元素的链表上。
+
 ### 确定哈希桶数组索引位置
 
 ```java
@@ -418,7 +420,258 @@ final Node<K,V> getNode(int hash, Object key) {
 }
 ```
 
+确定数组索引位置一共有三步：
 
+- 取 hashCode值：h = key.hashCode()
+- 高位参与运算：h ^ (h >>> 16)（此实现从JDK1.8开始，优化了高位运算的算法，通过hashCode()的高16位异或低16位实现的：(h = k.hashCode()) ^ (h >>> 16)，主要是从速度、功效、质量来考虑的，这么做可以在数组table的length比较小的时候，也能保证考虑到高低Bit都参与到Hash的计算中，同时不会有太大的开销。）
+- 取模运算：（n - 1）& hash (n 为 capacity，这里利用位运算进行取模，效率更高，该表达式相当于 hash % n)
+
+我们这里重点看一下取模运算，这里用了位运算，而没有使用 `%`，这是因为 数组的长度 n （capacity）是2的指数
+
+我们这里以 x = 1 << 4 为例
+
+```java
+x: 		 00010000
+x - 1: 00001111
+```
+
+令 y  与 x - 1 做 & 运算
+
+```java
+y :        10110110
+x - 1:     00001111
+y&(x - 1): 00000110
+```
+
+这个表达式与 y 对 x 取模结果是一样的
+
+```java
+y :     10110110
+x :     00010000
+y & x : 00000110
+```
+
+我们还能从运算中得出结论：**数组的 长度 n 越小，最终计算出的 索引 越有可能发生碰撞，因此我们在进行取模运算之前需要先进行高位异或运算，来减小发生碰撞的概率。**仅仅异或一下，既减少了系统的开销，也不会造成因为高位没有参与下标的计算(table长度比较小时)，从而引起的碰撞。如下表中的例子
+
+| key.hashCode() | `00001010 00001111 00001001 00001101` |
+| :------------: | :-----------------------------------: |
+| 无符号右移16位 | `00000000 00000000 00001010 00001111` |
+| 两者疑惑的结果 | `00001010 00001111 00000011 00000010` |
+
+**另外有一点要注意，`HashMap` 允许 `null` 作为 `key`， 所以在 `hash` 方法中我们可以看到 `null` 对象的 `hash` 结果为 0， `HashMap` 使用第 0 个桶来存放键为 `null` 的键值对。**
+
+### put 方法
+
+```java
+public V put(K key, V value) {
+  return putVal(hash(key), key, value, false, true);
+}
+
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+  Node<K,V>[] tab; Node<K,V> p; int n, i;
+  // 1. 判断 table 是否为空或为null，如果为空或null则调用 `resize()` 进行初始化
+  if ((tab = table) == null || (n = tab.length) == 0)
+    n = (tab = resize()).length;
+  // 2. 判断当前索引是否有值
+  if ((p = tab[i = (n - 1) & hash]) == null)
+    tab[i] = newNode(hash, key, value, null);
+  else {
+    Node<K,V> e; K k;
+    // 3. 判断数组当前索引存在的 Node 的 hash 与正要加入 Node 的hash 是否相同，以及两者的 key 是否同一引用或者equals方法返回true
+    if (p.hash == hash &&
+        ((k = p.key) == key || (key != null && key.equals(k))))
+      e = p;
+    // 4. 判断目前索引的值是否在红黑树上
+    else if (p instanceof TreeNode)
+      e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+    else {
+      // 5. 遍历当前索引链表，如果链表长度大于8，则将链表转为红黑树，在红黑树中进行插入操作，否则进行链表的插入操作，如果遍历过程中发现相同的node，则直接退出循环
+      for (int binCount = 0; ; ++binCount) {
+        if ((e = p.next) == null) {
+          p.next = newNode(hash, key, value, null);
+          if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+            treeifyBin(tab, hash);
+          break;
+        }
+        // key 已经存在则直接覆盖
+        if (e.hash == hash &&
+            ((k = e.key) == key || (key != null && key.equals(k))))
+          break;
+        p = e;
+      }
+    }
+    if (e != null) { // existing mapping for key
+      V oldValue = e.value;
+      if (!onlyIfAbsent || oldValue == null)
+        e.value = value;
+      afterNodeAccess(e);
+      return oldValue;
+    }
+  }
+  ++modCount;
+  // 6. 判断是否超过 threshold，超过则扩容
+  if (++size > threshold)
+    resize();
+  afterNodeInsertion(evict);
+  return null;
+}
+
+/*
+ * The following package-protected methods are designed to be
+ * overridden by LinkedHashMap, but not by any other subclass.
+ * Nearly all other internal methods are also package-protected
+ * but are declared final, so can be used by LinkedHashMap, view
+ * classes, and HashSet.
+ */
+
+// Create a regular (non-tree) node
+Node<K,V> newNode(int hash, K key, V value, Node<K,V> next) {
+  return new Node<>(hash, key, value, next);
+}
+```
+
+Put 方法可以抽象概括为一下六步：
+
+1. 判断 table 是否为空或为null，如果为空或null则调用 `resize()` 进行初始化。
+2. 计算 key 的 hash 值，并最终通过上面的方法求出该 key 在数组中对应的索引 i，如果 table[i] == null,直接通过 `newNode()` 新建非树节点（Node），转向 步骤6，否则转向 步骤3.
+3. 判断数组当前索引存在的 **首个Node** 的 hash 与正要加入 Node 的hash 是否相同（用到`key.hashCode()`），以及两者的 key 是否同一引用或者equals方法(用到 `key.equals()`)返回true，**这一步就解释了为什么作为 key 的类一定要重写 `hashCode` 和 `equals` 方法。**比较之后如果相同，则直接覆盖 value，否则 步骤4。
+4. 判断 table[i] 是否为 TreeNode，即是否是红黑树，如果是红黑树直接在树上插入键值对，否则转向 步骤5.
+5. 遍历当前索引链表，如果链表长度大于8，则将链表转为红黑树，在红黑树中进行插入操作，否则进行链表的插入操作，如果遍历过程中发现相同的node，则直接覆盖。**从源码中我们可以看到，从JDK8开始，链表的插入方法由头插法改成了尾插法。**
+6. 插入成功后（这里的插入指之前 i 索引处无 node时插入），判断实际存在的键值对数量是否超过了最大容量 threshold，如果超过，进行扩容。
+
+
+
+### resize 方法
+
+```java
+/**
+ * Initializes or doubles table size.  If null, allocates in
+ * accord with initial capacity target held in field threshold.
+ * Otherwise, because we are using power-of-two expansion, the
+ * elements from each bin must either stay at same index, or move
+ * with a power of two offset in the new table.
+ *
+ * @return the table
+ */
+final Node<K,V>[] resize() {
+  Node<K,V>[] oldTab = table;
+  int oldCap = (oldTab == null) ? 0 : oldTab.length;
+  int oldThr = threshold;
+  int newCap, newThr = 0;
+  if (oldCap > 0) {
+    // 当数组容量达到最大时不再扩容
+    if (oldCap >= MAXIMUM_CAPACITY) {
+      threshold = Integer.MAX_VALUE;
+      return oldTab;
+    }
+    else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+             oldCap >= DEFAULT_INITIAL_CAPACITY)
+      newThr = oldThr << 1; // double threshold
+  }
+  else if (oldThr > 0) // initial capacity was placed in threshold
+    newCap = oldThr;
+  // 创建 hashMap 之后第一次put
+  else {               // zero initial threshold signifies using defaults
+    newCap = DEFAULT_INITIAL_CAPACITY;
+    newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+  }
+  if (newThr == 0) {
+    float ft = (float)newCap * loadFactor;
+    newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+              (int)ft : Integer.MAX_VALUE);
+  }
+  threshold = newThr;
+  @SuppressWarnings({"rawtypes","unchecked"})
+  Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+  table = newTab;
+  // 循环遍历老map中的元素，迁移到对应新数组中去，进行扩容操作
+  if (oldTab != null) {
+    for (int j = 0; j < oldCap; ++j) {
+      Node<K,V> e;
+      if ((e = oldTab[j]) != null) {
+        // 老数组中元素引用置为null
+        oldTab[j] = null;
+        // 该索引只有一个元素，则直接计算新索引将 e 复制到新数组
+        if (e.next == null)
+          newTab[e.hash & (newCap - 1)] = e;
+        // 如果是红黑树
+        else if (e instanceof TreeNode)
+          ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+        // 如果该所以链表由多个值
+        else { // preserve order
+          Node<K,V> loHead = null, loTail = null;
+          Node<K,V> hiHead = null, hiTail = null;
+          Node<K,V> next;
+          do {
+            next = e.next;
+            // 这里通过当前hash与数组长度进行逻辑与操作，判断是否为0，来区分该元素是不变位置还是需要重新更换位置
+            if ((e.hash & oldCap) == 0) {
+              if (loTail == null)
+                loHead = e;
+              else
+                loTail.next = e;
+              loTail = e;
+            }
+            else {
+              if (hiTail == null)
+                hiHead = e;
+              else
+                hiTail.next = e;
+              hiTail = e;
+            }
+          } while ((e = next) != null);
+          if (loTail != null) {
+            loTail.next = null;
+            newTab[j] = loHead;
+          }
+          if (hiTail != null) {
+            hiTail.next = null;
+            // 现有index+现有数组的长度就是新数组中的索引位置
+            newTab[j + oldCap] = hiHead;
+          }
+        }
+      }
+    }
+  }
+  return newTab;
+}
+```
+
+分析以上代码可以得出如下结论：
+
+- 新建一个 HashMap 对象后，第一次 `put` 会触发 `resize` 操作，此时会用 `threshold`(初始threshold为16) 来初始化 `capacity` (line 687 `newCap = oldThr;`)
+- 当当前数组长度 >= 16 时，数组会扩容为原来的两倍（`newCap = oldCap << 1`` newThr = oldThr << 1`）
+- 扩容时不会重新计算hash值，hash值保存在 Node 对象中，只会改变 Node 对象在数组中的索引
+- 扩容时，现有元素要么不动，要么索引变为原来索引 + 原来数组长度
+- 扩容时判断元素是否移动是通过 `(e.hash & oldCap) == 0`，下面举例说明
+
+我们以 `map.put("a1","a");`为例， a1 计算后的hash值为3056，经过计算，初始化时 a1存在数组的0索引处
+
+| 初始化数组长度为16， 16 - 1 = 15 对应的二进制 | 00000000 00001111 |
+| :-------------------------------------------: | :---------------: |
+|               3056对应的二进制                | 00001011 11110000 |
+|                   3056 & 15                   | 00000000 00000000 |
+
+扩容后，数组长度变为32，此时计算  `(e.hash & oldCap)`
+
+| 数组初始化长度16 |   00000000 00010000   |
+| :--------------: | :-------------------: |
+|  3056 二进制值   |   00001011 11110000   |
+|    3056 & 16     | 00000000 000**1**0000 |
+
+可以 看到结果不为0， 说明 a1 需要迁移，我们来计算一下迁移后的新位置索引
+
+| 扩容后数组长度为32， 32 - 1 = 31 二进制值 | 00000000 000**1**1111 |
+| ----------------------------------------- | --------------------- |
+| 3056 二进制值                             | 00001011 11110000     |
+| 31 & 3056                                 | 00000000 000**1**0000 |
+
+我们可以看到计算出的索引为16，正好等于`j + oldCap` `(0 + 16)`，因为扩容后，31 相对于 15 在高位多了一个 1， 此时只要通过 `(e.hash & oldCap)` 计算出该高位多出的 1 对索引的影响是0还是2的指数即可，是0的话索引不变，不为0则变成 `原索引+oldCap`，因此扩容时node 要么不变，要么就移动2的指数。
+
+注意：
+
+JDK7中HashMap使用了链表的头插法，在扩容时会讲链表进行导致，JDK8以后才有尾插法，不存在这个问题。
 
 ## fail fast
 
