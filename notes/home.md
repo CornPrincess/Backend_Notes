@@ -12,3 +12,10 @@
 ## Contributor
 - [ ] use opencollective.com to record contributor
 - [ ] GFM toc exception
+
+##Acknowledgement
+
+- [Charles Babbage](https://en.wikipedia.org/wiki/Charles_Babbage) -- father of computer
+- [Andrew S. Tanenbaum](https://en.wikipedia.org/wiki/Andrew_S._Tanenbaum) -- auther of MINIX
+- 
+
