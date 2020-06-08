@@ -9,9 +9,9 @@
 
 
 
-| 算法与数据结构  | Java | 计算机组成原理| 操作系统 | 网络协议 | 数据库 | 消息队列 | 缓存 | 分布式 | 工具 |
-| :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: |
-| [:pencil:](#pencil-算法与数据结构)  | [:coffee:](#coffee-Java) | [:computer:](#computer-计算机组成原理) | [:fax:](#fax-操作系统) | [:cloud:](#cloud-网络协议) | [:floppy_disk:](#floppy_disk-数据库) | [:postbox:](#postbox-消息队列) | [:tent:](#tent-缓存) | [:earth_americas:](#earth_americas-分布式) | [:wrench:](#wrench-工具) |
+| 算法与数据结构  | Java | 计算机组成原理| 操作系统 | 网络协议 | 数据库 | 消息队列 | 缓存 | 分布式 | 工具 | 设计模式 |
+| :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | :-----------: | ------------- |
+| [:pencil:](#pencil-算法与数据结构)  | [:coffee:](#coffee-Java) | [:computer:](#computer-计算机组成原理) | [:fax:](#fax-操作系统) | [:cloud:](#cloud-网络协议) | [:floppy_disk:](#floppy_disk-数据库) | [:postbox:](#postbox-消息队列) | [:tent:](#tent-缓存) | [:earth_americas:](#earth_americas-分布式) | [:watermelon:](#watermelon-设计模式) | [:wrench:](#wrench-工具) |
 <br>
 
 <div align="center">
@@ -71,6 +71,15 @@
 ## :tent: 缓存 
 
 ## :earth_americas: 分布式
+
+## :watermelon: 设计模式 
+
+- 创建型
+- 行为型
+  - 策略
+  - 观察者
+- 结构型
+  - 装饰
 
 ## :wrench: 工具 
 
