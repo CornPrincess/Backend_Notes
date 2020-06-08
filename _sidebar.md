@@ -39,6 +39,14 @@
     * [LinkedList源码解析](notes/Java/Java容器/LinkedList源码解析.md)
     * [Vector源码解析](notes/Java/Java容器/Vector源码解析.md)
     * [HashMap源码解析](notes/Java/Java容器/HashMap源码解析.md)
-  
-  
+* 设计模式
+
+  * 创建型
+  * 行为型
+
+    * [策略](notes/设计模式/行为型/设计模式入门-策略模式.md)
+    * [观察者](notes/设计模式/行为型/观察者模式.md)
+  * 结构型
+
+    * [装饰](notes/设计模式/结构型/装饰者模式.md)
 

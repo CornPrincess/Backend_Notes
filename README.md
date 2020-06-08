@@ -76,10 +76,10 @@
 
 - 创建型
 - 行为型
-  - 策略
-  - 观察者
+  - [策略](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A5%E9%97%A8-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.md)
+  - [观察者](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F.md)
 - 结构型
-  - 装饰
+  - [装饰](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F.md)
 
 ## :wrench: 工具 
 
