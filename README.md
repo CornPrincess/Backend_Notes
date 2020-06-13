@@ -103,6 +103,7 @@ MIT
 ### TODO
  - [ ] 翻译谷歌技术写作文档
  - [ ] freecodecamp 翻译计划
+ - [ ] 看完操作系统第一章并做好笔记
 
 
 I am back! I will never give up！I still have a dream！
