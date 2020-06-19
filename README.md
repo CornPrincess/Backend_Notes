@@ -62,6 +62,10 @@
 
 ## :fax: 操作系统 
 
+- 简介
+  - [操作系统概述](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0.md)
+- [学习资源](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90.md)
+
 ## :cloud: 网络协议
 
 ## :floppy_disk: 数据库 
