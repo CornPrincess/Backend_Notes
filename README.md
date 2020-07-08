@@ -87,6 +87,11 @@
 
 ## :wrench: 工具 
 
+- maven
+- 系统设计
+  - UML
+  - UML cheat sheet
+
 ### 排版
 
 笔记内容按照 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines) 进行排版，以保证内容的可读性。
@@ -107,8 +112,4 @@ MIT
 ### TODO
  - [ ] 翻译谷歌技术写作文档
  - [ ] freecodecamp 翻译计划
- - [ ] 看完操作系统第一章并做好笔记
-
-
-I am back! I will never give up！I still have a dream！
 
