@@ -38,7 +38,7 @@ I/O设备一般由机械部件（mechanical component）和电子部件（electr
 
 多数早期的计算机是使用的这种方式。
 
-- [ ] 补图
+![memory mapped IO](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/memoryMappedIO.png)
 
 **第二个方法是PDP-11引入的，它将所有控制器寄存器映射到内存空间中，如图b。每个控制寄存器被分配唯一的一个内存地址，并且不会有内存被分配这一地址。这样的系统称为内存映射I/O（memory-mapped I/O）。通常分配给控制器的地址位于地址空间的顶端。**
 
@@ -57,7 +57,8 @@ I/O设备一般由机械部件（mechanical component）和电子部件（electr
 - 对一个设备控制寄存器采用高速缓存会引起问题，硬件必须针对每个页面具备选择性禁用高速缓存的能力，操作系统必须管理选择性高速缓存， 这为硬件和操作系统添加了额外的复杂性
 - 若计算机采用单独的内存总线，则I/O设备没法查看内存地址，因为内存地址旁路到内存总线上，必须采用其他的方法是内存映射IO可用。
 
-- [ ] 补图
+  ![bus architecture](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/busArchitecture.png)
+
 
 ## 直接存储器存取 Direct Memory Access
 
@@ -67,7 +68,7 @@ I/O设备一般由机械部件（mechanical component）和电子部件（electr
 
 >  It contains several registers that can be written and read by the CPU. These include a memory address register, a byte count register, and one or more control registers. The control registers specify the I/O port to use, the direction of the transfer (reading from the I/O device or writing to the I/O device), the transfer unit (byte at a time or word at a time), and the number of bytes to transfer in one burst
 
-- [ ] 补图
+![DMA](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/DMA.png)
 
 我们首先看一下没有DMA时，磁盘如何读：
 
@@ -98,7 +99,7 @@ I/O设备一般由机械部件（mechanical component）和电子部件（electr
 
 在一台典型的个人计算机系统中，中断结构如果所示。
 
-- [ ] 补图
+![interrupt](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/interrupt.png)
 
 >  When an I/O device has finished the work given to it, it causes an interrupt (assuming that interrupts have been enabled by the operating system). It does this by asserting a signal on a bus line that it has been assigned. This signal is detected by the interrupt controller chip on the parentboard, which then decides what to do.
 
@@ -118,7 +119,8 @@ I/O设备一般由机械部件（mechanical component）和电子部件（electr
 ### 精确中断和不精确中断
 
 现代CPU都普遍使用了流水线（pipelined）和超标量（superscalar internally parallel），这导致的结果为：当在流水线满的时候（通常的情形），如果出现一个中断，那么会发生什么情况？许多指令正处于不同的执行阶段。
-- [ ] 补图
+
+![precise interrupt](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/preciseInterrupt.png)
 将机器留在一个明确状态的中断称为**精确中断（precise interrupt）**，精确中断与具有以下四个特性：
 
 - PC（程序计数器）保存在一个已知的地方
