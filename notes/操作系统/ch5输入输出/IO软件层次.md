@@ -2,7 +2,7 @@
 
 IO软件通常组织成四个层次，每一层具有一个要执行的定义明确的功能和一个定义明确的与邻近层次的接口。功能和接口随系统的不同而不同。
 
-- [ ] 补图
+![layer of I/O software system](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/layerofIOSoftWare.png)
 
 ## 中断处理程序 Interrupt Handlers
 
@@ -31,7 +31,7 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 
 要有一个定义明确的模型，规定驱动程序做什么事情以及如何与操作系统的其余部分相互作用。**设备驱动程序通常位于操作系统的其余部分的下面。操作系统通常将驱动程序归类于少数的类别之一。最为通用的类别是设备（block device）和字符设备（character device）**
 
-- [ ] 补图
+![device driver](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/deviceDriver.png)
 
  大多数操作系统都定义了一个所有块设备必须支持的标准接口，并且还定义了另一个所有字符设备必须支持的标准接口，这些接口由许多过程组成，操作系统的其余部分可以调用他们让驱动程序工作。
 
@@ -45,13 +45,13 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 
 设备驱动程序和与设备无关的软件之间的确切界限依赖与具体系统（和设备）。与设备无关软件的基本功能是执行对所有设备公共的I/O功能，并向用户层软件提供一个同一个的接口。
 
-- [ ] 补图
+![function of device indpendent IO software](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/functionsOftheDeviceIndependentIOSoftware.png)
 
 ### 设备驱动程序的统一接口
 
 操作系统的一个主要问题是如何使所有I/O设备和驱动程序看起来或多或少是相同的。设备驱动程序与操作系统其余部分之间的接口是这一问题的一个方面，如果每个设备驱动程序有不同的与操作系统的接口，这意味着，可供系统调用的驱动程序函数随驱动程序的不同而不同，也意味着每个新的驱动程序提供接口都需要大量权限的编程工作。
 
-- [ ]  补图
+![uniform inferface for device drivers](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/uniformInterfaceForDevice.png)
 
 图b的设计的工作方式如下，**对于每一种设备类型，例如磁盘或打印机，操作系统定义一组驱动程序必须支持的函数。驱动程序通常包含一张表格，这张表格具有针对这些函数指向驱动程序自身的指针。当驱动程序装载时，操作系统记录下这张函数指针表的地址，所有当操作系统选用调用一个函数时，它可以通过这张表间接调用。这张函数指针表定义了驱动程序与操作系统其余部分之间的接口。给定类型（磁盘、打印机等）的所有设备都必须服从这一要求。**
 
@@ -65,7 +65,7 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 
 考虑一个想要从调制解调器中读入数据的进程，让用户进程执行read系统调用并阻塞自己以等待字符的到来，这是对到来的字符进行处理的一种可能的策略。每个字符的到来都将引起中断。**中断服务过程负责将字符递交给用户进程并将其解除阻塞。**用户进程将字符放在某个地方之后可以对另一个字符执行读操作并且再次阻塞。这一模型如图a
 
-- [ ] 补图
+![buffer](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/buffer.png)
 
 图a的问题在于对于每个到来的字符，都必须启动用户进程，对于短暂的数据流量让一个进程运行多次效率会很低。
 
@@ -79,7 +79,7 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 
 缓冲对于输出也是是否重要的，但是它也有不利的地方，如果数据被缓冲太多次，性能就会降低。**我们可以看到下图这些所有复制操作都会在很大程度上降低传输速率，因为所有这些步骤都必须是有序地发送。**
 
-- [ ] 补图
+![copy of a packet](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/copyAPacket.png)
 
 ### 错误报告
 
@@ -103,7 +103,7 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 
 并非所有用户层I/O软件都是由库过程实现的，另一个重要类别是假脱机系统（spooling）。假脱机是多道程序设计系统中独占IO设备的一种方法。
 
-- [ ] 补图
+![layers of the I/O software system](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/operating%20system/layerofIOSoftWare.png)
 
 当一个用户程序试图从一个文件中读一个块时，
 
@@ -111,7 +111,7 @@ IO软件通常组织成四个层次，每一层具有一个要执行的定义明
 - 与设备无关的软件在缓冲区高速缓存中查找有无要读的块，如果没有，则调用设备驱动程序
 - 设备驱动程序让硬件从磁盘中获取该块，然后，进程被阻塞直到磁盘操作完成
 
-当磁盘操作完成时：；
+当磁盘操作完成时：
 
 - 硬件产生中断，是的中断处理程序运行
 - 中断处理程序运行，查明发生了什么事情，唤醒休眠的进程
