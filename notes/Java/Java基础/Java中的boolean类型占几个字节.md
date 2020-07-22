@@ -24,6 +24,8 @@
 >
 > Java 虚拟机使用 1 表示 true ，0 表示 false 来编码 boolean 数组。Java 语言的 boolean 值被编译器映射成 Java 虚拟机的 int 类型的时候，也是采用一样的编码。
 
+如果要储存多个Boolean对象时，可以使用BitSet，占有内存空间更小。
+
 ## Reference
 
 1. [The Java™ Tutorials](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
