@@ -27,8 +27,11 @@
 - 数据结构
   - [数据结构知识点](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9F%A5%E8%AF%86%E7%82%B9.md)
   - [数据结构经典面试题](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+  - [数据抽象](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E6%8A%BD%E8%B1%A1.md)
+  - [背包、队列和栈](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E8%83%8C%E5%8C%85%E3%80%81%E9%98%9F%E5%88%97%E5%92%8C%E6%A0%88.md)
 - 算法
   - [UnionFind](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95/UnionFind.md)
+  - [位运算](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97.md)
 - [leetcode题解](https://github.com/CornPrincess/LeetCode)
 - [剑指offer题解](https://github.com/CornPrincess/Coding-Interview)
 - 工具
@@ -46,6 +49,9 @@
   - [正则表达式](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
   - [lambda表达式](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
   - [异常](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E5%BC%82%E5%B8%B8.md)
+  - [Comparable与Comparator接口](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/Comparator%E4%B8%8EComparable.md)
+  - [Java中的boolean类型占几个字节](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/Java%E4%B8%AD%E7%9A%84boolean%E7%B1%BB%E5%9E%8B%E5%8D%A0%E5%87%A0%E4%B8%AA%E5%AD%97%E8%8A%82.md)
+  - [自增与赋值运算符](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E8%87%AA%E5%A2%9E%E4%B8%8E%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6.md)
   - [面试题](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/Java%E5%9F%BA%E7%A1%80/%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 - 面向对象
   - [对象与类](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/Java/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB.md)
@@ -68,8 +74,40 @@
 
 ## :fax: 操作系统 
 
-- 简介
-  - [操作系统概述](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0.md)
+- 引论
+  - [操作系统概述](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch1%E5%BC%95%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0.md)
+- 进程与线程
+  - [进程](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch2%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/%E8%BF%9B%E7%A8%8B.md)
+  - [线程](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch2%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B.md)
+  - [进程间通信](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch2%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1.md)
+  - [调度](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch2%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/%E8%B0%83%E5%BA%A6.md)
+- 内存管理
+  - [无存储抽象](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E6%97%A0%E5%AD%98%E5%82%A8%E6%8A%BD%E8%B1%A1.md)
+  - [一种存储器抽象：地址空间](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E4%B8%80%E7%A7%8D%E5%AD%98%E5%82%A8%E5%99%A8%E6%8A%BD%E8%B1%A1-%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4.md)
+  - [虚拟内存](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98.md)
+  - [页面置换算法](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95.md)
+  - [分页系统中的设计问题](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98.md)
+  - [有关实现的问题](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E6%9C%89%E5%85%B3%E5%AE%9E%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98.md)
+  - [分段](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch3%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%88%86%E6%AE%B5.md)
+- 文件系统
+  - [文件](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch4%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6.md)
+  - [目录](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch4%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E7%9B%AE%E5%BD%95.md)
+  - [文件系统的实现](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch4%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0.md)
+  - [文件系统管理和优化](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch4%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96.md)
+- 输入和输出
+  - [I/O硬件原理](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch5%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/IO%E7%A1%AC%E4%BB%B6%E5%8E%9F%E7%90%86.md)
+  - [I/O软件原理](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch5%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/IO%E8%BD%AF%E4%BB%B6%E5%8E%9F%E7%90%86.md)
+  - [I/O软件层次](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch5%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/IO%E8%BD%AF%E4%BB%B6%E5%B1%82%E6%AC%A1.md)
+  - [盘](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch5%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/%E7%9B%98.md)
+  - [时钟](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch5%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/%E6%97%B6%E9%92%9F.md)
+- 死锁
+  - [资源](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E8%B5%84%E6%BA%90.md)
+  - [死锁概述](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E6%AD%BB%E9%94%81%E6%A6%82%E8%BF%B0.md)
+  - [鸵鸟算法](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E9%B8%B5%E9%B8%9F%E7%AE%97%E6%B3%95.md)
+  - [死锁检测和死锁恢复](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E5%92%8C%E6%AD%BB%E9%94%81%E6%81%A2%E5%A4%8D.md)
+  - [死锁避免](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E6%AD%BB%E9%94%81%E9%81%BF%E5%85%8D.md)
+  - [死锁预防](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2.md)
+  - [其他问题](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/ch6%E6%AD%BB%E9%94%81/%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98.md)
 - [学习资源](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90.md)
 
 ## :cloud: 网络协议
@@ -93,6 +131,7 @@
 
 ## :wrench: 工具 
 
+- cheat sheet
 - maven
 - 系统设计
   - UML
