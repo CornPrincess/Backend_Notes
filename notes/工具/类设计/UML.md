@@ -57,7 +57,7 @@ composition关系中的两个类有强生命周期依赖，也即意味着一个
 
 
 
-## Differences between Composition and Aggregation[[edit](https://en.wikipedia.org/w/index.php?title=Class_diagram&action=edit&section=10)]
+## Differences between Composition and Aggregation
 
 - Composition relationship
 
