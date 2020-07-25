@@ -95,9 +95,9 @@
 
   * cheat sheet
 
-    * [Java开发手册泰山版](notes/工具/cheat sheet/Java开发手册泰山版.md)
-    * [shellcheatsheet](notes/工具/cheat sheet/shellcheatsheet.md)
-    * [UMLNotationSummary](notes/工具/cheat sheet/UMLNotationSummary.md)
+    * [Java开发手册泰山版](notes/工具/cheat sheet/Java开发手册泰山版.pdf)
+    * [shellcheatsheet](notes/工具/cheat sheet/shellcheatsheet.pdf)
+    * [UMLNotationSummary](notes/工具/cheat sheet/UMLNotationSummary.pdf)
   * maven
   * Tips
 
