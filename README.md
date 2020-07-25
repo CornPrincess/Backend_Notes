@@ -32,7 +32,7 @@
 - [leetcode题解](https://github.com/CornPrincess/LeetCode)
 - [剑指offer题解](https://github.com/CornPrincess/Coding-Interview)
 - 工具
-  - [有用链接](https://github.com/CornPrincess/Backend_Nodets/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7.md)
+  - [有用链接](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A5%E5%85%B7/%E6%9C%89%E7%94%A8%E9%93%BE%E6%8E%A5.md)
 
 ## :coffee: Java
 
