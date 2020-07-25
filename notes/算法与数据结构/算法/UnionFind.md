@@ -53,3 +53,4 @@ Union is too expensive: It takes N<sup>2</sup> array accesses to process a seque
 ## Quick-union [lazy approach]
 
 Lazy approach: 
+
