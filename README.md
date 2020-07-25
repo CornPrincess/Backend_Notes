@@ -132,11 +132,14 @@
 ## :wrench: 工具 
 
 - cheat sheet
-  - Java开发手册泰山版
+  - [Java开发手册泰山版](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E5%B7%A5%E5%85%B7/cheat%20sheet/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%B3%B0%E5%B1%B1%E7%89%88.pdf)
+  - [shell](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E5%B7%A5%E5%85%B7/cheat%20sheet/shellcheatsheet.pdf)
+  - [UML](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E5%B7%A5%E5%85%B7/cheat%20sheet/UMLNotationSummary.pdf)
 - maven
-- 系统设计
-  - UML
-  - UML cheat sheet
+- Tips
+  - [程序调试技巧](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E5%B7%A5%E5%85%B7/Tips/%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7.md)
+- 类设计
+  - [UML](https://github.com/CornPrincess/Backend_Notes/blob/master/notes/%E5%B7%A5%E5%85%B7/%E7%B1%BB%E8%AE%BE%E8%AE%A1/UML.md)
 
 ### 排版
 
