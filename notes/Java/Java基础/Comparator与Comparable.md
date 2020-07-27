@@ -16,7 +16,6 @@ public interface Comparable<T> {
 >
 > This interface imposes a total ordering on the objects of each class that implements it. This ordering is referred to as the class's *natural ordering*, and the class's `compareTo` method is referred to as its *natural comparison method*.
 >
-> Lists (and arrays) of objects that implement this interface can be sorted automatically by [`Collections.sort`](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Collections.html#sort(java.util.List)) (and [`Arrays.sort`](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Arrays.html#sort(java.lang.Object[]))). Objects that implement this interface can be used as keys in a [sorted map](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/SortedMap.html) or as elements in a [sorted set](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/SortedSet.html), without the need to specify a [comparator](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Comparator.html).
 
 实现了 `Comparable` 接口的类可以进行排序，这种排序称为类的 `natural ordering`， 该类的 Lists 或 arrays 可以使用`Collections.sort()`或 `Arrays.sort()` 方法进行排序，并且该对象可以作为 sorted map 的键 或 sorted set的元素（不用显示声明 comparator）
 
