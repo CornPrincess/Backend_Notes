@@ -71,6 +71,16 @@
 
 相对于二叉查找树，散列表的优点在于代码更简单，且查找时间最优（常数级别，只有键的数据类型是标准的或者简单到我们可以为它写出满足（或者接近满足）均匀性假设的高效散列函数即可）。二叉查找数的优点在于抽象结构更简单（不需要设计散列函数），红黑树可以保证最坏情况下的性能且它能够支持的操作更多（如排名，选择，排序和范围查找）
 
+Q & A
+Why does Java use 31 in the hashCode() for String?
+It's prime, so that when the user mods out by another number, they have no common factors (unless it's a multiple of 31). 31 is also a Mersenne prime (like 127 or 8191) which is a prime number that is one less than a power of 2. This means that the mod can be done with one shift and one subtract if the machine's multiply instruction is slow.
+
+How do you extract the bits from a variable of type double for use in hashing?
+`Double.doubleToLongBits(x)` returns a 64-bit long integer whose bit representation is the same as the floating-point representation of the double value x.
+
+What's wrong with using (s.hashCode() % M) or Math.abs(s.hashCode()) % M to hash to a value between 0 and M-1?
+The % operator returns a non-positive integer if its first argument is negative, and this would create an array index out-of-bounds error. Surprisingly, the absolute value function can even return a negative integer. This happens if its argument is Integer.MIN_VALUE because the resulting positive integer cannot be represented using a 32-bit two's complement integer. This kind of bug would be excruciatingly difficult to track down because it would only occur one time in 4 billion! [ The String hash code of "polygenelubricants" is -2^31. ]
+
 
 
 - [ ] 补图 各种符号表的性能
