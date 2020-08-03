@@ -401,7 +401,12 @@ static class Node<K,V> implements Map.Entry<K,V> {
  * never be used in index calculations because of table bounds.
  * 
  * 翻译：
- * 计算 key.hashCode()的值，并且将hash的高位通过异或（XORs）扩展到地位，由于table     	* 使用2的指数进行masking，因此仅在其范围进行mask的hash将会发生冲突（已知的例子为在     	* 小table中连续的Float keys）所以这里使用了转换将高位延展到地位，这是在speed 		 	* utility和quality of bit-spreading之间的tradeoff，因为很多常见的hash已经合理       * 地分布 （所以不会从spread中受益），并且我哦们使用红黑树来处理多hash冲突，我们只XOR 	* 一 些位来减少系统缺失，并且否则高位的不准确影响不会影响到index 计算。
+ * 计算 key.hashCode()的值，并且将hash的高位通过异或（XORs）扩展到地位，由于table     	
+ * 使用2的指数进行masking，因此仅在其范围进行mask的hash将会发生冲突（已知的例子为在     	
+ * 小table中连续的Float keys）所以这里使用了转换将高位延展到地位，这是在speed 		 	
+ * utility和quality of bit-spreading之间的tradeoff，因为很多常见的hash已经合理       
+ * 地分布 （所以不会从spread中受益），并且我哦们使用红黑树来处理多hash冲突，我们只XOR 	
+ * 一 些位来减少系统缺失，并且否则高位的不准确影响不会影响到index 计算。
  *
  */
 static final int hash(Object key) {
@@ -642,7 +647,7 @@ final Node<K,V>[] resize() {
 
 分析以上代码可以得出如下结论：
 
-- 新建一个 HashMap 对象后，第一次 `put` 会触发 `resize` 操作，此时会用 `threshold`(初始threshold为16) 来初始化 `capacity` (line 687 `newCap = oldThr;`)
+- 新建一个 HashMap 对象后，第一次 `put` 会触发 `resize` 操作，此时会用 `threshold`(初始threshold为12) 来初始化 `capacity` (line 687 `newCap = oldThr;`)
 - 当当前数组长度 >= 16 时，数组会扩容为原来的两倍（`newCap = oldCap << 1`` newThr = oldThr << 1`）
 - 扩容时不会重新计算hash值，hash值保存在 Node 对象中，只会改变 Node 对象在数组中的索引
 - 扩容时，现有元素要么不动，要么索引变为原来索引 + 原来数组长度
