@@ -8,7 +8,7 @@
 
 基于高速缓存的存储交互很好地解决了处理器与内存速度之间的矛盾，但是也为计算机系统带来更高的复杂度，它引入了一个新的问题：缓存一致性（Cache Coherence）。在多路处理器系统中，每个处理器都有自己的高速缓存，而它们又共享同一主内存（Main Memory），这种系统称为共享内存多核系统（Shared Memory Multiprocessors System）。当多个处理器的运算任务都涉及同一块主内存区域时，将可能导致各自的缓存数据不一致。
 
-- [ ] 补图
+![memory and CPU and Cache](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/JavaSE/memoryAndCacheAndCPU.png)
 
 如果真的发生这种情况，那**同步回到主内存时该以谁的缓存数据为准呢**？为了解决一致性的问题，**需要各个处理器访问缓存时都遵循一些协议，在读写时要根据协议来进行操作**，这类协议有MSI、MESI（Illinois Protocol）、MOSI、Synapse、Firefly及Dragon Protocol等。从本章开始，我们将会频繁见到**“内存模型”一词，它可以理解为在特定的操作协议下，对特定的内存或高速缓存进行读写访问的过程抽象。**不同架构的物理机器可以拥有不一样的内存模型，而Java虚拟机也有自己的内存模型，并且与这里介绍的内存访问操作及硬件的缓存访问操作具有高度的可类比性。
 
