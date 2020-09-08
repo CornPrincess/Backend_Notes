@@ -15,3 +15,12 @@
 - Mybatis：
   - 相比 Hibernate 灵活，运行速度快
   - 开发速度慢，不支持村岁的面向对象操作，需熟悉 sql 语句，并且熟练使用sql 语句优化功能
+
+## hello world
+
+首先 hibernate 开发大致分为四步：
+
+![hibernate steps](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/Hibernate/hibernate-steps.png)
+
+d
+
