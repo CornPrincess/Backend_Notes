@@ -1,6 +1,8 @@
 Maven 中的 pom.xml 文件是我们平时接触最多的文件，但在最近的工作中经常发现有些基础的概念不明白而导致项目最终不能构建成功
 
-> POM stands for "Project Object Model". It is an XML representation of a Maven project held in a file named `pom.xml`. When in the presence of Maven folks, speaking of a project is speaking in the philosophical sense, beyond a mere collection of files containing code. A project contains configuration files, as well as the developers involved and the roles they play, the defect tracking system, the organization and licenses, the URL of where the project lives, the project's dependencies, and all of the other little pieces that come into play to give code life. <sup>[2]</sup>
+> POM stands for "Project Object Model". It is an XML representation of a Maven project held in a file named `pom.xml`. When in the presence of Maven folks, speaking of a project is speaking in the philosophical sense, beyond a mere collection of files containing code. A project contains configuration files, as well as the developers involved and the roles they play, the defect tracking system, the organization and licenses, the URL of where the project lives, the project's dependencies, and all of the other little pieces that come into play to give code life.  It is a one-stop-shop for all things concerning the project. In fact, in the Maven world, a project does not need to contain any code at all, merely a `pom.xml`.<sup>[2]</sup>
+
+我们不需要任何实际的 Java 代码，就可以定义一个 maven 项目的 POM，这体现 maven 的一大优点：**它可以让项目对象模型最大程度地于实际代码想独立，我们可以称之为解藕或者正交性。**
 
 # Quick Overview
 
@@ -80,12 +82,15 @@ Maven 中的 pom.xml 文件是我们平时接触最多的文件，但在最近�
 
 - groupId： 库组织名称，但是不应该只定义到组织名或者公司名，一般具体到项目一级，如org.sonatype.nexus(与对应的域名相反：nexus.sonatype.org)
 - artifactId: 具体的实际项目中的一个 Maven 项目（模块），推荐的做法是使用实际项目名称作为 artifactId 的前缀，如 nexus-indexer
-- version: 选择的 Maven 项目的版本（**dependency version requirement specification**
-- classifier：
-
-
-
-`<Dependency>` 中的 `<scope>test</scope>` 表示依赖只对测试有效，即在测试代码中可以导入，但是在主代码中不能导入，会编译失败。**如果不写，默认是 `<scope>compile</scope>` ，即测试和主代码都有效。**
+- version: 选择的 Maven 项目的版本（**dependency version requirement specification**)
+- classifier：区分 JDK版本
+- type：区分依赖包的类型，默认为 jar
+- scope: 区分在编译或运行时依赖的包作用的 classpath，以及限制这些依赖的传递
+  - compile：默认值，表示在编译，测试，运行阶段都需要这个模块对应的 jar 包在 classpath中，并且依赖会传递
+  - provided：仅在 compilation 和 test 的 classpaths中有效，并且没有依赖传递，即表示该包应该在 JDK 或 container 中提供。
+  - runtime：表示该 jar 包在compile阶段不需要，在runtime 和 test 阶段需要
+  - test：表示该 jar 包仅在test 和 execution 阶段需要，没有传递性
+  - system：this scope is similar to `provided` except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository.
 
 
 
@@ -96,3 +101,4 @@ Maven 中的 pom.xml 文件是我们平时接触最多的文件，但在最近�
 3. [Maven总结之Pom.xml解析（五）上篇](https://sq.163yun.com/blog/article/170717137729937408)
 4. [Maven总结之Pom.xml解析（五）中篇](https://sq.163yun.com/blog/article/170718066311094272)
 5. [Maven总结之Pom.xml解析（五）下篇](https://sq.163yun.com/blog/article/170718516808704000)
+

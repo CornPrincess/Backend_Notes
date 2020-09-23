@@ -12,4 +12,54 @@
 # Debug
 
 - 不要使用 IDE 自带的 maven，因为可能与自己安装的版本不一致，造成构建错误。
-- 当执行 maven 命令失败时可以在后面带上 `-X` 或 `-e`参数来查看堆栈信息
+- 当执行 maven 命令失败时可以在后面带上 `-X` 或 `-e` 参数来查看堆栈信息
+
+
+
+# 常见错误
+
+Q: Source option 5 is no longer supported. Use 7 or later.
+
+A: 出现此类错误，一般都是因为 Java 语言版本选择不对，可以在 POM 文件中加入以下代码解决
+
+ ```xml
+<properties>
+  <maven.compiler.source>1.8</maven.compiler.source>
+  <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+ ```
+
+Q: 需要用 maven 打成一个可执行的 jar 包
+
+A： 使用 shade 插件：
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-shade-plugin</artifactId>
+      <version>3.2.4</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>shade</goal>
+          </goals>
+          <configuration>
+            <transformers>
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <manifestEntries>
+                  <Main-Class>${app.main.class}</Main-Class>
+                  <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+                  <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+                </manifestEntries>
+              </transformer>
+            </transformers>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+

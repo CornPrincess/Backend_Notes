@@ -22,5 +22,4 @@
 
 ![hibernate steps](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/Hibernate/hibernate-steps.png)
 
-d
-
+开始
