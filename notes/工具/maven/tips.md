@@ -18,9 +18,9 @@
 
 # 常见错误
 
-Q: Source option 5 is no longer supported. Use 7 or later.
+**Q**: Source option 5 is no longer supported. Use 7 or later.
 
-A: 出现此类错误，一般都是因为 Java 语言版本选择不对，可以在 POM 文件中加入以下代码解决
+**A**: 出现此类错误，一般都是因为 Java 语言版本选择不对，可以在 POM 文件中加入以下代码解决
 
  ```xml
 <properties>
@@ -29,9 +29,28 @@ A: 出现此类错误，一般都是因为 Java 语言版本选择不对，可�
 </properties>
  ```
 
-Q: 需要用 maven 打成一个可执行的 jar 包
+或者可以加入如下插件：
 
-A： 使用 shade 插件：
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+
+
+**Q**: 需要用 maven 打成一个可执行的 jar 包
+
+**A**： 使用 shade 插件：
 
 ```xml
 <build>

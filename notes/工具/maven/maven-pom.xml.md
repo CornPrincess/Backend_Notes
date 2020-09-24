@@ -57,6 +57,8 @@ Maven 中的 pom.xml 文件是我们平时接触最多的文件，但在最近�
 
 ## Dependencies
 
+### 依赖配置
+
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -85,14 +87,80 @@ Maven 中的 pom.xml 文件是我们平时接触最多的文件，但在最近�
 - version: 选择的 Maven 项目的版本（**dependency version requirement specification**)
 - classifier：区分 JDK版本
 - type：区分依赖包的类型，默认为 jar
-- scope: 区分在编译或运行时依赖的包作用的 classpath，以及限制这些依赖的传递
+- scope: 区分在编译，测试或运行时作用的 classpath，以及限制这些依赖的传递
   - compile：默认值，表示在编译，测试，运行阶段都需要这个模块对应的 jar 包在 classpath中，并且依赖会传递
   - provided：仅在 compilation 和 test 的 classpaths中有效，并且没有依赖传递，即表示该包应该在 JDK 或 container 中提供。
   - runtime：表示该 jar 包在compile阶段不需要，在runtime 和 test 阶段需要
   - test：表示该 jar 包仅在test 和 execution 阶段需要，没有传递性
   - system：this scope is similar to `provided` except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository.
 
+对于 scope 我们可以使用表格进行记录
 
+| 依赖范围 （scope） | compile classpath | test classpath | execution classpath |              例子               |
+| :----------------: | :---------------: | :------------: | :-----------------: | :-----------------------------: |
+|      compile       |         Y         |       Y        |          Y          |           Spring-core           |
+|        test        |         -         |       Y        |          Y          |              Junit              |
+|      Provided      |         Y         |       Y        |          -          |           Servlet-api           |
+|      Runtime       |         -         |       Y        |          Y          |          JDBC驱动实现           |
+|       System       |         Y         |       Y        |          -          | 本地的，maven仓库之外的类库文件 |
+
+### 依赖传递
+
+依赖传递的概念很好理解，熟悉 spring 的朋友应该都知道，`spring-core` 依赖于 `commons-logging`，如果 `account-email` 依赖于 `spring-core`，那么 `account-email` 就会间接依赖于 `commons-logging`
+
+![maven dependency transitive](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/maven/maven-dependency-translate.png)
+
+有了传递性依赖机制，在使用 Spring 时就不用去考虑它依赖了什么，也不用担心引入多余的依赖。 Maven 会解析各个直接依赖的 POM， 将那些必要的间接依赖，以传递性依赖的形式引入到当前的项目中。
+
+这里会涉及到传递性依赖和依赖范围，可以直接看 《maven实战》5.6 节。
+
+### 依赖调解和可选依赖
+
+依赖调解即发生依赖冲突时使用 maven 自带的原则进行调解：路径最近者优先和第一声明者优先。
+
+可选依赖即 `optional`，该字段表明此依赖不会传递，该字段试情况使用。
+
+
+
+### 最佳实践
+
+#### 排除依赖
+
+有些时候，一些依赖会引入 SNAPSHOT 版本的传递依赖，此时可以使用 `exclusions` 标签进行排除，并且自己重新引入这个依赖，指定其版本。
+
+```xml
+<dependency>
+  <groupId>com.minmin.mvndemo.account</groupId>
+  <artifactId>project-b</artifactId>
+  <version>1.0.0</version>
+  <exclusions>
+    <exclusion>
+      <groupId>com.minmin.mvndemo.account</groupId>
+      <artifactId>project-c</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+
+<dependency>
+  <groupId>com.minmin.mvndemo.account</groupId>
+  <artifactId>project-c</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+#### 归类依赖
+
+将同一个项目下的模块进行归类，即将 `version` 抽取到 `properties` 字段中，方面统一管理。
+
+```xml
+<prerequisites>
+  <springframework.version>5.1.1</springframework.version>
+</prerequisites>
+```
+
+#### 优化依赖
+
+maven 会自动解析所有项目的直接依赖和传递性依赖，并且根据规则正确判断每个依赖的范围，对于一些依赖冲突，也能进行调节，确保任何一个构件只有唯一的版本在依赖中存在。
 
 # Reference
 
