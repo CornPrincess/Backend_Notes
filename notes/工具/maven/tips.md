@@ -1,6 +1,10 @@
 # 常用命令
 
 - `mvn help:system`: 该命令会打印出所有 Java 系统属性和环境变量
+- `mvn dependency:list`：查看当前已解析依赖。
+- `mvn dependency:tree`：查看当前已解析依赖树。
+- `mvn dependency:analyze`：分析当前项目的依赖情况
+- `mvn clean install-U`：使用 `-U` 参数 ，强制让maven 更新本地镜像
 
 # 常用配置
 
