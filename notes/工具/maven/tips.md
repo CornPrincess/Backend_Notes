@@ -5,6 +5,7 @@
 - `mvn dependency:tree`：查看当前已解析依赖树。
 - `mvn dependency:analyze`：分析当前项目的依赖情况
 - `mvn clean install-U`：使用 `-U` 参数 ，强制让maven 更新本地镜像
+- `mvn help:describe -Dplugin=compiler -Ddetail` 命令可以查看插件的具体信息，包括该插件默认绑定的生命周期阶段
 
 # 常用配置
 
@@ -17,8 +18,6 @@
 
 - 不要使用 IDE 自带的 maven，因为可能与自己安装的版本不一致，造成构建错误。
 - 当执行 maven 命令失败时可以在后面带上 `-X` 或 `-e` 参数来查看堆栈信息
-
-
 
 # 常见错误
 
@@ -85,4 +84,8 @@
   </plugins>
 </build>
 ```
+
+# 常用插件
+
+[Maven总结之插件管理](https://sq.163yun.com/blog/article/170713335421394944)
 

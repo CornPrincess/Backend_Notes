@@ -73,7 +73,59 @@ Maven 的生命周期与插件相互绑定，具体来说，**是生命周期的
 
 ##### 内置绑定
 
-Maven 在核心为一些主要的生命周期
+Maven 在核心为一些主要的生命周期阶段绑定了很多插件的目标，当用户通过命令行调用生命周期阶段的时候，对应的插件目标就会执行相应的任务。
+
+三个生命周期中默认绑定的插件目标可以通过参考2查询得到。
+
+##### 自定义绑定
+
+自定义绑定的简单实用案例：
+
+```xml
+ <plugin>
+   <groupId>com.mycompany.example</groupId>
+   <artifactId>display-maven-plugin</artifactId>
+   <version>1.0</version>
+   <executions>
+     <execution>
+       <phase>process-test-resources</phase>
+       <goals>
+         <goal>time</goal>
+       </goals>
+     </execution>
+   </executions>
+ </plugin>
+```
+
+#### 插件配置
+
+插件配置也是平常经常会用到的功能
+
+##### 命令行配置
+
+`mvn install -Dmaven.test.skip=true`
+
+##### POM 中插件全局配置
+
+最常用的是配置编译时的 Java 版本
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.1</version>
+      <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+
 
 ## Reference
 
