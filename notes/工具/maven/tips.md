@@ -6,6 +6,12 @@
 - `mvn dependency:analyze`：分析当前项目的依赖情况
 - `mvn clean install-U`：使用 `-U` 参数 ，强制让maven 更新本地镜像
 - `mvn help:describe -Dplugin=compiler -Ddetail` 命令可以查看插件的具体信息，包括该插件默认绑定的生命周期阶段
+- `mvn -h` 可以查看支持的参数
+- `-am, -and, -pl, -rf` 参数可以在构建多模块项目时只构建指定的模块或者对模块进行裁剪，具体用例如下：
+  - `mvn install -pl account-email,account-persist` 构建指定的模块
+  - `mvn install -pl account-email -am` 同时构建所列模块的依赖模块
+  - `mvn install -pl account-parent -amd` 同时构建依赖于所列模块的模块
+  - `mvn install -rf account-email` 在完整的反应堆构建顺序技术上指定从哪个模块开始构建
 
 # 常用配置
 
