@@ -53,6 +53,55 @@ public @interface Demo {
 
 ## 标准注解
 
+JavaSE 在 java.lang, java.lang.annotation 和 javax.annotation 包中定义了大量的注解接口。其中四个是元注解，用于描述注解接口的行为属性，其他的三个是规则接口，可以用其来注解源代码中的项。
+
+### 用于编译的注解
+
+@Deprecated 用于过时的项
+
+@SupressWarnings 用于告知编译器阻止特殊类型的警告，如： @SupressWarnings("unchecked")
+
+@Override 用于方法重写
+
+@Generated 供代码生成工具使用
+
+### 用于管理资源的注解
+
+@PostConstruct 被标记的方法在对象被构建之后紧着着调用
+
+@PreDestroy 被标记的方法在对象被移除之前调用
+
+@Resource 用于资源注入
+
+### 元注解
+
+@Target 用于一个注解，以限制该注解可以应用到哪些项上，其取值范围在 `java.lang.annotation.ElementType` 的枚举值中，**一条没有任何@Target 限制的注解可以应用于任何项上。**
+
+```java
+@Target({ElementType.TYPE,  ElementType.METHOD})
+public @interface BugReport{}
+```
+
+@Retention 用于指定一条注解应该保留多长时间。取值由三种，**默认值为 `RetentionPolicy.CLASS`**
+
+- SOURCE：Annotations are to be discarded by the compiler. 不包括在类文件中的注解
+- CLASS：Annotations are to be recorded in the class file by the compiler, but need not be retained by the VM at run time.  This is the default behavior. 包括在类文件中的注解，但是虚拟机不需要将他们载入。
+- RUNTIME：Annotations are to be recorded in the class file by the compiler and retained by the VM at run time, so they may be read reflectively. 包括在类文件中的注解，并由虚拟机载入，通过反射API可以获取他们
+
+@Documented 表明注解是否要归档
+
+@Inherited 只能用于类，表明其子类自动拥有同样的注解，如
+
+```java
+@Inherited
+public @interface Persistent {}
+
+@Persistent
+public class Employee {}
+
+public class Manager extends Employee {} // also @Persistent
+```
+
 
 
 ## 使用注解
@@ -122,19 +171,42 @@ public interface Override extends Annotation{
 
 ### 解析注解代码
 
-注解本身不会做任何事情，他们只是存在于源文件中，其本质是一个接口。从这个角度看一个注解更像是注释。此时需要解析注解的代码，他们才能生效，一般有两种，一种是编译器 直接扫描，一种是运行时反射。
+注解本身不会做任何事情，他们只是存在于源文件中，其本质是一个接口。从这个角度看一个注解更像是注释。此时需要解析注解的代码，他们才能生效。一般有三种方法来对注解进行处理，分别是编译时处理，运行时处理以及在字节码级别上进行处理。
 
-#### 编译期扫描
+#### 源码级注解处理
 
 这种方法指编译器在对java 代码编译字节码的过程会检测到某个类或者方法被一些注解修饰，这是它会对这些注解进行某些处理。
 
 典型的就是注解 @Override，一旦编译器检测到某个方法被修饰了 @Override 注解，编译器就会检查当前方法的方法签名是否真正重写了父类的某个方法，也就是比较父类中是否具有一个同样的方法签名。
 
-这一种情况只适用于那些编译器已经熟知的注解类，比如 JDK 内置的几个注解，而你自定义的注解，编译器是不知道你这个注解的作用的，当然也不知道该如何处理，往往只是会根据该注解的作用范围来选择是否编译进字节码文件，仅此而已。
+我们同样来看书中的例子，首先我们定义一个运行范围是 SOURCE 的注解
 
+```java
+@Documented
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Property {
+    String editor() default "";
+}
+```
 
+接着开发处理注解的processor，该processor 继承自 `javax.annotation.processing.AbstractProcessor`
 
-#### 运行时反射
+```java
+@SupportedAnnotationTypes("sourceAnnotations.Property")
+@SupportedSourceVersion(SourceVersion.RELEASE_14)
+public class BeanInfoAnnotationProcessor extends AbstractProcessor {}
+```
+
+最后测试时可以通过如下命令进行测试，即指定注解处理器来进行编译
+
+`javac -processor sourceAnnotations.BeanInfoAnnotationProcessor chart/ChartBean.java -XprintRounds`
+
+整个运行过程如图：
+
+![annotation source](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/JavaSE/annotation-source.png)
+
+#### 运行时注解处理
 
 我们这里的示例代码使用反射来解析注解，首先来看使用注解的类
 
@@ -230,7 +302,13 @@ public class ButtonTest {
 }
 ```
 
-在这个例子中，我们通过**反射的机制让注解在运行时进行处理**
+在这个例子中，我们通过**反射的机制让注解在运行时进行处理**，整体的流程如图
+
+![annotation by reflect](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/JavaSE/annotation.png)
+
+#### 字节码工程
+
+对于字节码文件，我们可以在
 
 # 修得可以：
 
