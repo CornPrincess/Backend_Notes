@@ -308,7 +308,28 @@ public class ButtonTest {
 
 #### 字节码工程
 
-对于字节码文件，我们可以在zijie
+对于字节码文件，我们可以使用 `BCEL` 工具进行处理，举例来说，如果方法被 `@LogEntry(logger=loggerName)` 注解过，那么在方法的开始部分，我们将添加下面这条语句的字节码：`Logger.getLogger(loggerName).entering(className, methodName)`。为了实现这个目标，我们需要做以下几步：
+
+- 加载类文件中的字节码
+- 定位所有的方法
+- 对于每个方法，检查它是不是有一个 LogEntry 注解
+- 如果有，在方法开始部分添加字节码
+
+对于 BCEL 感兴趣可以看其 [官网使用手册](http://commons.apache.org/proper/commons-bcel/manual/introduction.html)
+
+代码示例：
+
+定义自定义注解
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface LogEntry {
+   String logger();
+}
+```
+
+
 
 # 修得可以：
 
