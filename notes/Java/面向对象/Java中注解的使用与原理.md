@@ -329,57 +329,161 @@ public @interface LogEntry {
 }
 ```
 
+在类中使用注解：
 
+```java
+public class Item {
+    private String description;
+    private int partNumber;
 
-# 修得可以：
+    /**
+     * Constructs an item.
+     *
+     * @param aDescription the item's description
+     * @param aPartNumber  the item's part number
+     */
+    public Item(String aDescription, int aPartNumber) {
+        description = aDescription;
+        partNumber = aPartNumber;
+    }
 
-## 合照：
+    /**
+     * Gets the description of this item.
+     *
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
 
-0Z1A0866
+    @Override
+    public String toString() {
+        return "[description=" + description + ", partNumber=" + partNumber + "]";
+    }
 
-0Z1A0926
+    @Override
+    @LogEntry(logger = "global")
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
+            return true;
+        }
+        if (otherObject == null) {
+            return false;
+        }
+        if (getClass() != otherObject.getClass()) {
+            return false;
+        }
+        Item other = (Item) otherObject;
+        return Objects.equals(description, other.description) && partNumber == other.partNumber;
+    }
 
-0Z1A0972
+    @Override
+    @LogEntry(logger = "global")
+    public int hashCode() {
+        return Objects.hash(description, partNumber);
+    }
+}
+```
 
-0Z1A1008
+使用 BCEL 工具处理注解：
 
-0Z1A0986
+```java
+public class EntryLogger {
+    private ClassGen cg;
+    private ConstantPoolGen cpg;
 
-0Z1A1001
+    /**
+     * Adds entry logging code to the given class.
+     *
+     * @param args the name of the class file to patch
+     */
+    public static void main(String[] args) {
+        try {
+            if (args.length == 0) {
+                System.out.println("USAGE: java bytecodeAnnotations.EntryLogger classname");
+            } else {
+                JavaClass jc = Repository.lookupClass(args[0]);
+                ClassGen cg = new ClassGen(jc);
+                EntryLogger el = new EntryLogger(cg);
+                el.convert();
+                String f = Repository.lookupClassFile(cg.getClassName()).getPath();
+                System.out.println("Dumping " + f);
+                cg.getJavaClass().dump(f);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-0Z1A1037
+    /**
+     * Constructs an EntryLogger that inserts logging into annotated methods of a given class.
+     *
+     * @param cg the class
+     */
+    public EntryLogger(ClassGen cg) {
+        this.cg = cg;
+        cpg = cg.getConstantPool();
+    }
 
-0Z1A1045 
+    /**
+     * converts the class by inserting the logging calls.
+     */
+    public void convert() throws IOException {
+        for (Method m : cg.getMethods()) {
+            AnnotationEntry[] annotations = m.getAnnotationEntries();
+            for (AnnotationEntry a : annotations) {
+                if (a.getAnnotationType().equals("LbytecodeAnnotations/LogEntry;")) {
+                    for (ElementValuePair p : a.getElementValuePairs()) {
+                        if (p.getNameString().equals("logger")) {
+                            String loggerName = p.getValue().stringifyValue();
+                            cg.replaceMethod(m, insertLogEntry(m, loggerName));
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-0Z1A1070
+    /**
+     * Adds an "entering" call to the beginning of a method.
+     *
+     * @param m          the method
+     * @param loggerName the name of the logger to call
+     */
+    private Method insertLogEntry(Method m, String loggerName) {
+        MethodGen mg = new MethodGen(m, cg.getClassName(), cpg);
+        String className = cg.getClassName();
+        String methodName = mg.getMethod().getName();
+        System.out.printf("Adding logging instructions to %s.%s%n", className, methodName);
 
-0Z1A1152
+        int getLoggerIndex = cpg.addMethodref("java.util.logging.Logger", "getLogger",
+                "(Ljava/lang/String;)Ljava/util/logging/Logger;");
+        int enteringIndex = cpg.addMethodref("java.util.logging.Logger", "entering",
+                "(Ljava/lang/String;Ljava/lang/String;)V");
 
-0Z1A1175
+        InstructionList il = mg.getInstructionList();
+        InstructionList patch = new InstructionList();
+        patch.append(new PUSH(cpg, loggerName));
+        patch.append(new INVOKESTATIC(getLoggerIndex));
+        patch.append(new PUSH(cpg, className));
+        patch.append(new PUSH(cpg, methodName));
+        patch.append(new INVOKEVIRTUAL(enteringIndex));
+        InstructionHandle[] ihs = il.getInstructionHandles();
+        il.insert(ihs[0], patch);
 
-0Z1A1125
+        mg.setMaxStack();
+        return mg.getMethod();
+    }
+}
 
-0Z1A1185
+```
 
- ## 单人照：
+最后可以使用 EntryLogger 来对需要解析注解的类进行处理.
 
-0Z1A0873
-
-0Z1A0878
-
-0Z1A0897
-
-0Z1A0905
-
-0Z1A0980
-
-0Z1A1177
-
-#修得有问题：
-
-0Z1A0974 女方脸拉得太长
+书中推荐的做法是将字节码工程延迟到载入时，即类加载器加载类的时候，具体可以参考 Java核心技术二 10.7 内容。
 
 ## Reference
 
 1. [JAVA 注解的基本原理](https://juejin.im/post/6844903636733001741#heading-3)
+2. Java 核心技术卷二
 
