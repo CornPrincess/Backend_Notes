@@ -108,6 +108,10 @@ java 中动态代理的实现一般有两种：JDK Proxy类和第三方的 cglib
 
 在运行时 ProxySubject(在运行时创建) 将具体的事情交给 DynamicProxy 来做，即调用复写 InvocationHandler 的 invoke 方法，而 DynamicProxy 中的 invoke方法又会最终调用 RealSubject 的方法。
 
+### cglib
+
+
+
 ## Reference
 
 1. [Dynamic Proxy Classes](https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html)
