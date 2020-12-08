@@ -54,13 +54,15 @@ class ThreadUnsafeExample {
 - 将变量 cnt 从内存加载到寄存器
 - 在寄存器中执行 +1 操作
 - 将结果写入内存
+- 只有wait会释放锁，yield，join，sleep都不会释放锁
 
-- [ ] butu 
-- [ ] 只有wait会释放锁，yield，join，sleep都不会释放锁
+![原子性示意图](https://blog-1300663127.cos.ap-shanghai.myqcloud.com/BackEnd_Notes/JavaSE/%E5%8E%9F%E5%AD%90%E6%80%A7%E7%A4%BA%E6%84%8F%E5%9B%BE.png)
 
 ## 解决方法
 
 ### 锁对象
+
+锁机制有两个特性：**原子性**和**可见性**
 
 这里我们首先使用 JDK5 引入的 `ReentrantLock`，Java 文档推荐使用形式如下
 
@@ -375,11 +377,245 @@ condition.signalAll();
 - 试图获得锁时不能设定超时
 - 每个锁仅有单一的条件，可能不够
 
+synchronize 根据锁的分类有两种用法
 
+ #### 对象锁
+
+在 Java 中，每个对象都会有一个 monitor 对象，这个对象其实就是 Java 对象的锁，通常被称为内置锁或对象锁。类的对象可以有多个，所以每个对象都有其独立的锁，互不干扰，即不同的线程访问被不同的对象锁保护的代码不受影响。
+
+对象锁有两种用法
+
+- synchronized(this|object) {} 修饰代码块
+- 修饰非静态方法
+
+```java
+public class SyncThread implements Runnable {
+
+    @Override
+    public void run() {
+        String threadName = Thread.currentThread().getName();
+        if (threadName.startsWith("A")) {
+            async();
+        } else if (threadName.startsWith("B")) {
+            sync0();
+        } else if (threadName.startsWith("C")) {
+            sync();
+        }
+    }
+
+    // synchronized 修饰代码块
+    private void sync0() {
+        System.out.println(Thread.currentThread().getName() + "-sync0:" + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        synchronized (this) {
+            try {
+                System.out.println(Thread.currentThread().getName() + "_Sync0_Start: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+                Thread.sleep(2000);
+                System.out.println(Thread.currentThread().getName() + "_Sync0_End: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // synchronize 修饰非静态方法
+    private synchronized void sync() {
+        System.out.println(Thread.currentThread().getName() + "_Sync2: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        try {
+            System.out.println(Thread.currentThread().getName() + "_Sync2_Start: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+            Thread.sleep(2000);
+            System.out.println(Thread.currentThread().getName() + "_Sync2_End: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 异步方法
+     */
+    private void async() {
+        try {
+            System.out.println(Thread.currentThread().getName() + "_Async_Start: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+            Thread.sleep(2000);
+            System.out.println(Thread.currentThread().getName() + "_Async_End: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```java
+public static void main(String[] args) {
+  SyncThread syncThread = new SyncThread();
+  Thread A_thread1 = new Thread(syncThread, "A_thread1");
+  Thread A_thread2 = new Thread(syncThread, "A_thread2");
+  Thread B_thread1 = new Thread(syncThread, "B_thread1");
+  Thread B_thread2 = new Thread(syncThread, "B_thread2");
+  Thread C_thread1 = new Thread(syncThread, "C_thread1");
+  Thread C_thread2 = new Thread(syncThread, "C_thread2");
+  A_thread1.start();
+  A_thread2.start();
+  B_thread1.start();
+  B_thread2.start();
+  C_thread1.start();
+  C_thread2.start();
+}
+```
+
+我们分别同时运行三组线程，来查看同步与异步方法的区别
+
+##### 异步方法
+
+我们可以看到在多线程运行不加锁的方法时，两个现场可以同时进入相同的代码块，不存在互斥现象。
+
+```html
+A_thread2_Async_Start: 22:29:49:549
+A_thread1_Async_Start: 22:29:49:549
+A_thread1_Async_End: 22:29:51:550
+A_thread2_Async_End: 22:29:51:550
+```
+
+##### synchronized修饰代码块
+
+```java
+B_thread1-sync0:22:32:45:727
+B_thread2-sync0:22:32:45:727
+B_thread1_Sync0_Start: 22:32:45:728
+B_thread1_Sync0_End: 22:32:47:731
+B_thread2_Sync0_Start: 22:32:47:732
+B_thread2_Sync0_End: 22:32:49:734
+```
+
+观察结果可以发现 synchronized 代码块以外的代码，多个线程访问不受限制，但是对于代码块以内的代码，对象锁进行了互斥的保护，即同一时间只能由一个获得锁的线程进行访问，其他线程要访问必须等待拥有锁的线程释放锁才可以。**上面的代码也证实了 sleep 操作并不会释放锁。**
+
+##### sycnhronized 修饰非静态方法
+
+```html
+C_thread1_Sync2: 22:37:19:371
+C_thread1_Sync2_Start: 22:37:19:372
+C_thread1_Sync2_End: 22:37:21:377
+C_thread2_Sync2: 22:37:21:378
+C_thread2_Sync2_Start: 22:37:21:378
+C_thread2_Sync2_End: 22:37:23:379
+```
+
+上述结果表明，synchronized 修饰的静态方法，该方法内的所有代码都被对象锁保护，同一时间是能有一个线程获得锁进行访问。
+
+##### 测试不同对象
+
+以上的测试代码都是针对同一个带有同步方法类的对象，我们现在测试多线程访问不同对象。
+
+```java
+public static void main(String[] args) {
+  Thread A_thread1 = new Thread(new SyncThread(), "A_thread1");
+  Thread A_thread2 = new Thread(new SyncThread(), "A_thread2");
+  Thread B_thread1 = new Thread(new SyncThread(), "B_thread1");
+  Thread B_thread2 = new Thread(new SyncThread(), "B_thread2");
+  Thread C_thread1 = new Thread(new SyncThread(), "C_thread1");
+  Thread C_thread2 = new Thread(new SyncThread(), "C_thread2");
+  A_thread1.start();
+  A_thread2.start();
+  B_thread1.start();
+  B_thread2.start();
+  C_thread1.start();
+  C_thread2.start();
+}
+```
+
+```html
+C_thread2_Sync2: 22:44:10:527
+C_thread1_Sync2: 22:44:10:527
+C_thread1_Sync2_Start: 22:44:10:527
+C_thread2_Sync2_Start: 22:44:10:527
+C_thread1_Sync2_End: 22:44:12:531
+C_thread2_Sync2_End: 22:44:12:531
+```
+
+分析部分结果可知，多线程访问不同对象的同步方法互不影响。
+
+#### 类锁
+
+和对象锁相似，类锁同样也有两种用法
+
+- synchronized(X.class)
+- 修饰静态方法
+
+我们先来测试多线程对于同一个对象的调用
+
+##### synchronized(类.class) {} 
+
+来看对应的运行结果
+
+```html
+B_thread1_Sync1: 23:03:29
+B_thread2_Sync1: 23:03:29
+B_thread1_Sync1_Start: 23:03:29
+B_thread1_Sync1_End: 23:03:31
+B_thread2_Sync1_Start: 23:03:31
+B_thread2_Sync1_End: 23:03:33
+```
+
+观察结果可知，代码块内的方法是被锁保护的
+
+##### sycnhronized 修饰静态方法
+
+```html
+C_thread1_Sync2: 23:07:27
+C_thread1_Sync2_Start: 23:07:27
+C_thread1_Sync2_End: 23:07:29
+C_thread2_Sync2: 23:07:29
+C_thread2_Sync2_Start: 23:07:29
+C_thread2_Sync2_End: 23:07:31
+```
+
+同样修饰的静态方法也是被类锁保护的。
+
+##### 测试不同对象
+
+```java
+public static void main(String[] args) {
+  Thread B_thread1 = new Thread(new ClassLockSyncThread(), "B_thread1");
+  Thread B_thread2 = new Thread(new ClassLockSyncThread(), "B_thread2");
+  Thread C_thread1 = new Thread(new ClassLockSyncThread(), "C_thread1");
+  Thread C_thread2 = new Thread(new ClassLockSyncThread(), "C_thread2");
+
+  B_thread1.start();
+  B_thread2.start();
+  C_thread1.start();
+  C_thread2.start();
+}
+```
+
+先来看用 synchronized(X.class) 代码块
+
+```html
+B_thread2_Sync1: 23:12:30
+B_thread1_Sync1: 23:12:30
+B_thread2_Sync1_Start: 23:12:30
+B_thread2_Sync1_End: 23:12:32
+B_thread1_Sync1_Start: 23:12:32
+B_thread1_Sync1_End: 23:12:34
+```
+
+**可以看出即使是不同对象，类锁还是可以保证线程的互斥**，再来看对于修饰的静态方法
+
+```html
+C_thread1_Sync2: 23:16:35
+C_thread1_Sync2_Start: 23:16:35
+C_thread1_Sync2_End: 23:16:37
+C_thread2_Sync2: 23:16:37
+C_thread2_Sync2_Start: 23:16:37
+C_thread2_Sync2_End: 23:16:39
+```
+
+可以看出对于修饰的静态方法，即使是不同对象，在同一时刻还是只能有一个线程可以获得锁。
+
+最后，我们要明确一点，**所有对象锁和类锁是独立的，互不干扰。**Java 设计者以不是很精确的方式采用来监视器 monitor 的概念，**Java 中每一个对象有一个内部的锁和内部的条件。如果一个方法用 synchronized 关键字声明，那么，他表现的就像一个监视器方法。**
 
 ## Reference
 
 1. Java核心技术卷1
+2. [Java 之 synchronized 详解](https://juejin.cn/post/6844903482114195463#heading-0)
 
 
 
