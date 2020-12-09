@@ -1,6 +1,7 @@
+
 一、概述
 
-
+> pg默认的隔离基本是read commit，具体可参考  https://www.v2ex.com/t/185244
 
 　　此文档主要对Postgresql 锁机制进行分析，在讲解的过程中结合实验，理解Postgresql的锁机制。
 
